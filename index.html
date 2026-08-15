@@ -2,698 +2,1066 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#080C09">
 <title>GreenReader</title>
 <style>
   :root {
-    --bg: #0d1f14;
-    --panel: #142c1c;
-    --panel-2: #1b3a24;
-    --accent: #4ade80;
-    --accent-dim: #2f6b45;
-    --text: #eafbee;
-    --text-dim: #9fc2a8;
-    --danger: #f87171;
-    --warn: #fbbf24;
+    --bg:        #080C09;
+    --surface:   #101612;
+    --surface-2: #18201A;
+    --line:      #232E25;
+    --line-soft: #1B241D;
+    --text:      #E8F2EA;
+    --dim:       #8CA394;
+    --dim-2:     #5E7266;
+    --accent:    #5BE585;
+    --accent-ink:#04180B;
+    --accent-dim:#1E3A28;
+    --amber:     #F5C451;
+
+    --r-card: 20px;
+    --r-btn: 14px;
+    --pad: 16px;
+    --tabbar-h: 60px;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body {
     margin: 0; padding: 0;
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
     min-height: 100%;
+    -webkit-font-smoothing: antialiased;
     overscroll-behavior-y: contain;
   }
+  body { font-size: 15px; line-height: 1.45; }
+  .num { font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+
   #app {
-    max-width: 480px;
+    max-width: 460px;
     margin: 0 auto;
-    padding: env(safe-area-inset-top,16px) 16px calc(env(safe-area-inset-bottom,16px) + 16px);
+    padding: calc(env(safe-area-inset-top, 0px) + 12px) var(--pad)
+             calc(env(safe-area-inset-bottom, 0px) + var(--tabbar-h) + 20px);
     min-height: 100vh;
   }
-  h1 {
-    font-size: 22px;
-    margin: 12px 0 4px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+
+  /* ---------- Header ---------- */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px;
   }
-  .subtitle { color: var(--text-dim); font-size: 13px; margin-bottom: 20px; }
-  .card {
-    background: var(--panel);
-    border: 1px solid var(--panel-2);
-    border-radius: 16px;
-    padding: 18px;
-    margin-bottom: 16px;
+  .brand {
+    display: flex; align-items: center; gap: 9px;
+    font-size: 17px; font-weight: 650; letter-spacing: -0.01em;
   }
-  .card h2 {
-    font-size: 15px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--text-dim);
-    margin: 0 0 12px;
+  .brand .mark {
+    width: 28px; height: 28px; border-radius: 9px;
+    background: linear-gradient(150deg, var(--accent), #2FA95C);
+    display: grid; place-items: center; font-size: 15px;
   }
-  .step-label {
-    font-size: 13px;
-    color: var(--accent);
-    font-weight: 600;
-    margin-bottom: 6px;
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11.5px; font-weight: 600;
+    color: var(--amber);
+    background: rgba(245,196,81,0.09);
+    border: 1px solid rgba(245,196,81,0.22);
+    padding: 5px 10px; border-radius: 999px; cursor: pointer;
   }
-  button {
-    font-family: inherit;
-    font-size: 16px;
-    font-weight: 600;
-    border: none;
-    border-radius: 12px;
-    padding: 14px 18px;
-    cursor: pointer;
-    width: 100%;
-    color: #06210e;
+  .pill:active { opacity: 0.7; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--r-card);
+    padding: 14px 14px 18px;
+    margin-bottom: 14px;
+  }
+  #heroSvg { width: 100%; display: block; max-height: 38vh; }
+  .verdict { text-align: center; margin-top: 10px; }
+  .verdict .big {
+    font-size: 44px; font-weight: 700; line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .verdict .big.muted { color: var(--dim-2); font-size: 29px; }
+  .verdict .cap { font-size: 12.5px; color: var(--dim); margin-top: 3px; }
+
+  /* Finger readout — the bridge from screen to green */
+  .fingers {
+    display: none;
+    align-items: center; gap: 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 14px; margin-top: 14px;
+  }
+  .fingers.on { display: flex; }
+  .fbars { display: flex; gap: 4px; flex: none; }
+  .fbars i {
+    display: block; width: 11px; height: 34px; border-radius: 6px;
     background: var(--accent);
-    transition: transform 0.1s ease, opacity 0.15s ease;
   }
-  button:active { transform: scale(0.97); }
-  button.secondary {
-    background: var(--panel-2);
-    color: var(--text);
+  .fbars i.half { opacity: 0.42; }
+  .ftext { font-size: 13px; color: var(--dim); line-height: 1.35; }
+  .ftext b { color: var(--text); font-size: 17px; font-weight: 700; }
+  .ftext small { display: block; font-size: 11px; color: var(--dim-2); }
+
+  .statrow {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; margin-top: 14px;
+    background: var(--line-soft); border-radius: 12px; overflow: hidden;
   }
-  button.ghost {
-    background: transparent;
-    color: var(--text-dim);
-    border: 1px solid var(--panel-2);
+  .statrow .s { background: var(--surface); padding: 10px 6px; text-align: center; }
+  .statrow .s .v { font-size: 16px; font-weight: 650; }
+  .statrow .s .k {
+    font-size: 10px; color: var(--dim-2); text-transform: uppercase;
+    letter-spacing: 0.07em; margin-top: 2px;
   }
-  button:disabled { opacity: 0.4; }
-  .row { display: flex; gap: 10px; }
-  .row > * { flex: 1; }
+  .flipline { text-align: center; margin-top: 12px; font-size: 12.5px; color: var(--dim); }
+  .flipline button {
+    background: none; border: none; color: var(--accent);
+    font: inherit; font-weight: 600; cursor: pointer; padding: 4px 6px;
+  }
+  .warnline {
+    margin-top: 12px; font-size: 12.5px; color: var(--amber);
+    background: rgba(245,196,81,0.08); border: 1px solid rgba(245,196,81,0.2);
+    border-radius: 10px; padding: 9px 12px; line-height: 1.45;
+  }
+
+  /* ---------- Steps ---------- */
+  .steps {
+    background: var(--surface); border: 1px solid var(--line-soft);
+    border-radius: var(--r-card); overflow: hidden; margin-bottom: 14px;
+  }
+  .step + .step { border-top: 1px solid var(--line-soft); }
+  .step-head { display: flex; align-items: center; gap: 12px; padding: 15px 16px; cursor: pointer; }
+  .step-num {
+    flex: none; width: 24px; height: 24px; border-radius: 50%;
+    display: grid; place-items: center; font-size: 12px; font-weight: 700;
+    background: var(--surface-2); color: var(--dim); border: 1px solid var(--line);
+    transition: background .18s, color .18s, border-color .18s;
+  }
+  .step.done .step-num { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .step.active .step-num { border-color: var(--accent); color: var(--accent); }
+  /* A step that is both done and open keeps the dark glyph on the green fill. */
+  .step.done.active .step-num { color: var(--accent-ink); }
+  .step-title { flex: 1; font-size: 14.5px; font-weight: 550; }
+  .step-val { font-size: 14px; font-weight: 650; color: var(--dim); }
+  .step.done .step-val { color: var(--accent); }
+  .step-body { display: none; padding: 2px 16px 18px; }
+  .step.active .step-body { display: block; }
+  .hint { font-size: 13px; color: var(--dim); margin: 0 0 14px; line-height: 1.5; }
+  .err { font-size: 12.5px; color: var(--amber); margin: 8px 0 0; display: none; }
+  .err.on { display: block; }
+
+  /* ---------- Buttons ---------- */
+  button.btn {
+    font-family: inherit; font-size: 15.5px; font-weight: 650;
+    border: none; border-radius: var(--r-btn);
+    padding: 15px 18px; width: 100%;
+    color: var(--accent-ink); background: var(--accent); cursor: pointer;
+    transition: transform .1s ease, opacity .15s ease;
+  }
+  button.btn:active { transform: scale(0.975); }
+  button.btn.sec { background: var(--surface-2); color: var(--text); border: 1px solid var(--line); }
+  button.btn.ghost { background: transparent; color: var(--dim); border: 1px solid var(--line); }
+  .btnrow { display: flex; gap: 10px; }
+  .btnrow > * { flex: 1; }
+
+  /* ---------- Level ---------- */
+  .level-wrap { display: flex; align-items: center; gap: 18px; margin-bottom: 16px; }
+  #levelSvg { width: 108px; height: 108px; flex: none; }
+  .level-read .v { font-size: 38px; font-weight: 700; letter-spacing: -0.035em; line-height: 1; }
+  .level-read .k { font-size: 11px; color: var(--dim-2); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 5px; }
+  .level-read .sub { font-size: 12.5px; color: var(--dim); margin-top: 8px; }
+
+  /* ---------- Fields ---------- */
   .field { margin-bottom: 14px; }
   .field label {
-    display: block;
-    font-size: 13px;
-    color: var(--text-dim);
-    margin-bottom: 6px;
+    display: block; font-size: 11px; color: var(--dim-2);
+    text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 7px;
   }
-  input[type=number], select {
+  input[type=text] {
     width: 100%;
-    background: var(--panel-2);
-    border: 1px solid #24492f;
-    color: var(--text);
-    font-size: 17px;
-    padding: 12px;
-    border-radius: 10px;
-    font-family: inherit;
+    background: var(--surface-2); border: 1px solid var(--line); color: var(--text);
+    font-family: inherit; font-size: 17px; font-weight: 600;
+    padding: 13px 14px; border-radius: 12px; font-variant-numeric: tabular-nums;
   }
-  .stat-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin: 10px 0;
+  input:focus { outline: none; border-color: var(--accent-dim); }
+  .seg {
+    display: flex; background: var(--surface-2);
+    border: 1px solid var(--line); border-radius: 12px; padding: 3px; gap: 3px;
   }
-  .stat {
-    background: var(--panel-2);
-    border-radius: 10px;
-    padding: 10px 12px;
-    text-align: center;
+  .seg button {
+    flex: 1; background: none; border: none; color: var(--dim);
+    font: inherit; font-size: 13.5px; font-weight: 600;
+    padding: 9px 2px; border-radius: 9px; cursor: pointer;
   }
-  .stat .val { font-size: 20px; font-weight: 700; }
-  .stat .lbl { font-size: 11px; color: var(--text-dim); text-transform: uppercase; }
-  .arrow-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 24px 0 10px;
+  .seg button.on { background: var(--accent-dim); color: var(--accent); }
+  .seg button small { display: block; font-size: 10px; font-weight: 500; opacity: 0.75; }
+  .stepper {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface-2); border: 1px solid var(--line);
+    border-radius: 12px; padding: 6px;
   }
-  #arrowSvg { width: 160px; height: 160px; }
-  .result-big {
-    text-align: center;
-    font-size: 34px;
-    font-weight: 800;
-    margin: 4px 0 2px;
+  .stepper button {
+    width: 40px; height: 40px; flex: none;
+    background: var(--surface); border: 1px solid var(--line);
+    color: var(--text); font-size: 20px; font-weight: 600;
+    border-radius: 9px; cursor: pointer;
   }
-  .result-sub { text-align: center; color: var(--text-dim); font-size: 13px; margin-bottom: 8px; }
-  .badge {
-    display: inline-block;
-    font-size: 11px;
-    padding: 3px 8px;
-    border-radius: 999px;
-    background: var(--panel-2);
-    color: var(--text-dim);
-    margin-left: 6px;
-  }
-  .warn-box {
-    background: rgba(251,191,36,0.1);
-    border: 1px solid rgba(251,191,36,0.3);
-    color: var(--warn);
-    font-size: 12.5px;
-    border-radius: 10px;
-    padding: 10px 12px;
-    margin-bottom: 16px;
-    line-height: 1.4;
-  }
-  .debug {
-    font-size: 11px;
-    color: var(--text-dim);
-    font-family: ui-monospace, Menlo, monospace;
-    background: #08150d;
-    border-radius: 8px;
-    padding: 8px 10px;
-    margin-top: 10px;
-    white-space: pre-wrap;
-  }
-  nav {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 18px;
-    background: var(--panel);
-    border-radius: 12px;
-    padding: 4px;
-  }
-  nav button {
-    background: transparent;
-    color: var(--text-dim);
-    padding: 10px;
-    font-size: 13px;
-  }
-  nav button.active {
-    background: var(--accent-dim);
-    color: var(--text);
-  }
-  .hidden { display: none !important; }
-  .history-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--panel-2);
-    font-size: 13px;
-  }
-  .history-item:last-child { border-bottom: none; }
-  .history-item .meta { color: var(--text-dim); font-size: 11px; }
-  .result-btns { display: flex; gap: 8px; margin-top: 10px; }
-  .result-btns button { font-size: 13px; padding: 10px; }
-  .empty { color: var(--text-dim); font-size: 13px; text-align: center; padding: 20px 0; }
-  .flip-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 13px;
-    color: var(--text-dim);
-    margin-top: 10px;
-  }
-  .flip-toggle input { width: 20px; height: 20px; }
+  .stepper .val { flex: 1; text-align: center; font-size: 17px; font-weight: 650; font-variant-numeric: tabular-nums; }
+  .stepper .val small { display: block; font-size: 10.5px; color: var(--dim-2); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
 
-  #cameraView {
-    position: fixed;
-    inset: 0;
-    background: #000;
-    z-index: 100;
+  /* ---------- Cards ---------- */
+  .card {
+    background: var(--surface); border: 1px solid var(--line-soft);
+    border-radius: var(--r-card); padding: 18px; margin-bottom: 14px;
   }
-  #cameraVideo {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .card h2 {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.09em;
+    color: var(--dim-2); margin: 0 0 14px; font-weight: 650;
   }
-  #cameraOverlay {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+  .card p { font-size: 13.5px; color: var(--dim); line-height: 1.55; margin: 0; }
+  .card p + p { margin-top: 10px; }
+  .row2 { display: flex; gap: 10px; }
+  .row2 > * { flex: 1; }
+
+  .accbox { text-align: center; padding: 6px 0 14px; }
+  .accbox .v { font-size: 40px; font-weight: 700; letter-spacing: -0.03em; }
+  .accbox .k { font-size: 12.5px; color: var(--dim); margin-top: 2px; }
+
+  .hist { display: flex; flex-direction: column; gap: 2px; }
+  .hrow { background: var(--surface-2); border-radius: 12px; padding: 12px 14px; }
+  .hrow .l1 { display: flex; justify-content: space-between; align-items: baseline; }
+  .hrow .l1 .d { font-size: 15px; font-weight: 650; }
+  .hrow .l1 .t { font-size: 11px; color: var(--dim-2); }
+  .hrow .l2 { font-size: 12px; color: var(--dim); margin-top: 3px; }
+  .hrow .l3 { display: flex; gap: 7px; margin-top: 10px; }
+  .hrow .l3 button {
+    flex: 1; background: var(--surface); border: 1px solid var(--line);
+    color: var(--dim); font: inherit; font-size: 12.5px; font-weight: 600;
+    padding: 8px; border-radius: 9px; cursor: pointer;
   }
-  #camReadout {
-    position: absolute;
-    top: calc(env(safe-area-inset-top,16px) + 16px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(13,31,20,0.75);
-    backdrop-filter: blur(6px);
-    color: var(--accent);
-    font-weight: 700;
-    font-size: 15px;
-    padding: 8px 16px;
-    border-radius: 999px;
+  .tag { display: inline-block; font-size: 11px; font-weight: 650; padding: 3px 9px; border-radius: 999px; margin-top: 8px; }
+  .tag.in { background: var(--accent-dim); color: var(--accent); }
+  .tag.miss { background: rgba(245,196,81,0.12); color: var(--amber); }
+  .empty { text-align: center; color: var(--dim-2); font-size: 13.5px; padding: 26px 0; }
+
+  /* ---------- Tab bar ---------- */
+  .tabbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: flex;
+    background: rgba(8,12,9,0.86);
+    -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+    border-top: 1px solid var(--line-soft);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
-  #camHint {
-    position: absolute;
-    bottom: calc(env(safe-area-inset-bottom,16px) + 90px);
-    left: 16px;
-    right: 16px;
-    text-align: center;
-    color: var(--text);
-    font-size: 12.5px;
-    background: rgba(13,31,20,0.75);
-    backdrop-filter: blur(6px);
-    padding: 10px 14px;
-    border-radius: 10px;
-    line-height: 1.4;
+  .tabbar button {
+    flex: 1; background: none; border: none; cursor: pointer;
+    color: var(--dim-2); font: inherit;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 9px 0 7px; font-size: 10.5px; font-weight: 600;
   }
-  #btnCloseCamera {
-    position: absolute;
-    bottom: calc(env(safe-area-inset-bottom,16px) + 16px);
-    left: 16px;
-    right: 16px;
-    background: rgba(13,31,20,0.85);
-    backdrop-filter: blur(6px);
-    color: var(--text);
-    border: 1px solid rgba(255,255,255,0.2);
+  .tabbar button svg { width: 21px; height: 21px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .tabbar button.on { color: var(--accent); }
+
+  /* ---------- Sheet ---------- */
+  .sheet-bg {
+    position: fixed; inset: 0; z-index: 90;
+    background: rgba(0,0,0,0.6);
+    -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+    display: flex; align-items: flex-end;
+  }
+  .sheet {
+    width: 100%; max-width: 460px; margin: 0 auto;
+    background: var(--surface); border-radius: 24px 24px 0 0;
+    border-top: 1px solid var(--line);
+    padding: 10px 20px calc(env(safe-area-inset-bottom, 0px) + 20px);
+    animation: rise .26s cubic-bezier(.2,.8,.2,1);
+    max-height: 88vh; overflow-y: auto;
+  }
+  @keyframes rise { from { transform: translateY(100%); } }
+  .grabber { width: 38px; height: 4px; border-radius: 999px; background: var(--line); margin: 0 auto 16px; }
+  .sheet h3 { font-size: 17px; margin: 0 0 10px; font-weight: 650; }
+  .sheet p { font-size: 13.5px; color: var(--dim); line-height: 1.6; margin: 0 0 14px; }
+
+  .hidden { display: none !important; }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   }
 </style>
 </head>
 <body>
 <div id="app">
-  <h1>⛳ GreenReader <span class="badge">träning</span></h1>
-  <div class="subtitle">AimPoint-inspirerad lutningsmätning för övning på greenen</div>
 
-  <div class="warn-box">
-    ⚠️ Endast för träning. Att använda telefonens sensorer för att läsa lutning är inte tillåtet under en tävlingsrond (Regel 4.3). Använd detta för att bygga känsla, inte som facit under spel.
+  <div class="topbar">
+    <div class="brand"><span class="mark">⛳</span> GreenReader</div>
+    <div class="pill" id="pillInfo">Träningsläge</div>
   </div>
 
-  <nav>
-    <button id="navRead" class="active">Läs green</button>
-    <button id="navHistory">Historik</button>
-    <button id="navSettings">Inställningar</button>
-  </nav>
+  <!-- ============ MEASURE ============ -->
+  <div id="v-measure">
 
-  <!-- READ VIEW -->
-  <div id="view-read">
+    <div class="hero">
+      <svg id="heroSvg" viewBox="0 0 260 290" aria-label="Vy över greenen">
+        <defs>
+          <radialGradient id="gGreen" cx="50%" cy="38%" r="78%">
+            <stop offset="0%" stop-color="#1A2A1D"/>
+            <stop offset="100%" stop-color="#0C120D"/>
+          </radialGradient>
+          <linearGradient id="gPath" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#5BE585" stop-opacity="0.25"/>
+            <stop offset="55%" stop-color="#5BE585" stop-opacity="0.75"/>
+            <stop offset="100%" stop-color="#5BE585" stop-opacity="1"/>
+          </linearGradient>
+          <clipPath id="clipGreen"><rect x="0" y="0" width="260" height="290" rx="18"/></clipPath>
+        </defs>
 
-    <div class="card" id="permCard">
-      <h2>Steg 0 · Sensoråtkomst</h2>
-      <p style="font-size:13px;color:var(--text-dim);margin-top:0">iPhone kräver att du tillåter rörelse- och riktningssensorer.</p>
-      <button id="btnPermission">Tillåt sensorer</button>
-      <div id="permStatus" style="font-size:12px;margin-top:8px;color:var(--text-dim)"></div>
-    </div>
+        <rect x="0" y="0" width="260" height="290" rx="18" fill="url(#gGreen)"/>
+        <g clip-path="url(#clipGreen)">
+          <g id="contours" opacity="0.16" stroke="#5BE585" fill="none" stroke-width="1.1"></g>
+        </g>
+        <g id="fallArrow" opacity="0.55"></g>
+        <text id="fallLabel" x="46" y="268" fill="#5E7266" font-size="9"
+              text-anchor="middle" opacity="0" style="font-family:-apple-system,sans-serif">nedför</text>
 
-    <div class="card">
-      <h2>Steg 1 · Riktning mot hål</h2>
-      <div class="step-label">Stå vid apex-punkten, rikta toppen av telefonen mot hålet</div>
-      <button id="btnHeading" class="secondary">Läs riktning mot hål</button>
-      <div class="stat-grid">
-        <div class="stat"><div class="val" id="headingVal">–</div><div class="lbl">Kompassriktning</div></div>
+        <!-- the two unselected pace lines sit behind the chosen one -->
+        <path id="pGhostA" fill="none" stroke="#5BE585" stroke-opacity="0.22" stroke-width="1.6" stroke-dasharray="4 4"/>
+        <path id="pGhostB" fill="none" stroke="#5BE585" stroke-opacity="0.22" stroke-width="1.6" stroke-dasharray="4 4"/>
+
+        <line id="aimLine" x1="130" y1="248" x2="130" y2="54"
+              stroke="#E8F2EA" stroke-opacity="0.3" stroke-width="1.5" stroke-dasharray="5 6"/>
+        <path id="ballPath" fill="none" stroke="url(#gPath)" stroke-width="3.2" stroke-linecap="round"/>
+
+        <g id="aimMark" opacity="0">
+          <line id="aimTick" y1="44" y2="64" stroke="#E8F2EA" stroke-opacity="0.55" stroke-width="1.5"/>
+        </g>
+
+        <circle cx="130" cy="54" r="9.5" fill="#050805" stroke="#31402F" stroke-width="1.5"/>
+        <circle cx="130" cy="54" r="3" fill="#31402F" opacity="0.5"/>
+        <circle cx="130" cy="248" r="6" fill="#FFFFFF"/>
+        <circle cx="130" cy="248" r="10" fill="none" stroke="#FFFFFF" stroke-opacity="0.18"/>
+      </svg>
+
+      <div class="verdict">
+        <div class="big muted num" id="vBig">Mät greenen</div>
+        <div class="cap" id="vCap">Följ stegen nedan för att få ditt sikte</div>
+      </div>
+
+      <div class="fingers" id="fingersBox">
+        <div class="fbars" id="fBars"></div>
+        <div class="ftext">
+          <b class="num" id="fNum">–</b> <span id="fUnit">fingerbredder</span>
+          <small>håll armen rakt ut och sikta vid kanten</small>
+        </div>
+      </div>
+
+      <div class="statrow">
+        <div class="s"><div class="v num" id="sSlope">–</div><div class="k">Sidlutning</div></div>
+        <div class="s"><div class="v num" id="sAlong">–</div><div class="k">Upp / ned</div></div>
+        <div class="s"><div class="v num" id="sBreak">–</div><div class="k">Brytning</div></div>
+      </div>
+
+      <div class="warnline hidden" id="dirWarn"></div>
+
+      <div class="flipline hidden" id="flipLine">
+        Bryter åt fel håll? <button id="btnFlip">⇄ Vänd riktning</button>
       </div>
     </div>
 
-    <div class="card">
-      <h2>Steg 2 · Lutning</h2>
-      <div class="step-label">Lägg telefonen plant på gräset, samma punkt</div>
-      <button id="btnTilt" class="secondary">Läs lutning</button>
-      <div class="stat-grid">
-        <div class="stat"><div class="val" id="slopeVal">–</div><div class="lbl">Lutning %</div></div>
-        <div class="stat"><div class="val" id="fallDirVal">–</div><div class="lbl">Fallriktning</div></div>
+    <div class="steps" id="steps">
+
+      <div class="step" data-step="0" id="st0">
+        <div class="step-head"><div class="step-num">0</div><div class="step-title">Sensoråtkomst</div><div class="step-val" id="v0">Krävs</div></div>
+        <div class="step-body">
+          <p class="hint">iPhone kräver din tillåtelse för att appen ska få läsa rörelse- och riktningssensorerna.</p>
+          <button class="btn" id="btnPerm">Tillåt sensorer</button>
+        </div>
       </div>
-      <div class="flip-toggle">
-        <span>Pilen pekar fel håll? Vänd</span>
-        <input type="checkbox" id="flipToggle">
+
+      <div class="step" data-step="1" id="st1">
+        <div class="step-head"><div class="step-num">1</div><div class="step-title">Riktning mot hål</div><div class="step-val" id="v1">–</div></div>
+        <div class="step-body">
+          <p class="hint">Stå vid bollen och rikta telefonens ovankant rakt mot hålet. Håll stilla och tryck.</p>
+          <button class="btn sec" id="btnHeading">Läs riktning</button>
+          <p class="err" id="err1"></p>
+        </div>
       </div>
-      <div class="debug hidden" id="debugBox"></div>
+
+      <div class="step" data-step="2" id="st2">
+        <div class="step-head"><div class="step-num">2</div><div class="step-title">Lutning</div><div class="step-val" id="v2">–</div></div>
+        <div class="step-body">
+          <p class="hint">Lägg telefonen plant på gräset mellan boll och hål. Avläsningen uppdateras live.</p>
+          <div class="level-wrap">
+            <svg id="levelSvg" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="45" fill="#0C120D" stroke="#232E25" stroke-width="1.5"/>
+              <circle cx="50" cy="50" r="30" fill="none" stroke="#1B241D" stroke-width="1"/>
+              <circle cx="50" cy="50" r="15" fill="none" stroke="#1B241D" stroke-width="1"/>
+              <line x1="50" y1="8" x2="50" y2="92" stroke="#1B241D" stroke-width="1"/>
+              <line x1="8" y1="50" x2="92" y2="50" stroke="#1B241D" stroke-width="1"/>
+              <circle id="bubble" cx="50" cy="50" r="7" fill="#5BE585" opacity="0.9"/>
+            </svg>
+            <div class="level-read">
+              <div class="v num" id="liveSlope">–</div>
+              <div class="k">Lutning %</div>
+              <div class="sub" id="liveDir">Väntar på sensor…</div>
+            </div>
+          </div>
+          <button class="btn" id="btnLock">Lås mätning</button>
+          <p class="err" id="err2"></p>
+        </div>
+      </div>
+
+      <div class="step" data-step="3" id="st3">
+        <div class="step-head"><div class="step-num">3</div><div class="step-title">Avstånd &amp; puttfart</div><div class="step-val" id="v3">–</div></div>
+        <div class="step-body">
+          <div class="field">
+            <label>Avstånd till hål</label>
+            <div class="seg" id="unitSeg" style="margin-bottom:10px">
+              <button data-unit="ft" class="on">Fot</button>
+              <button data-unit="m">Meter</button>
+            </div>
+            <input type="text" id="distIn" placeholder="15" inputmode="decimal" autocomplete="off">
+            <p class="err" id="errDist"></p>
+          </div>
+          <div class="field">
+            <label>Puttfart</label>
+            <div class="seg" id="speedSeg">
+              <button data-speed="die">Död<small>stannar vid hålet</small></button>
+              <button data-speed="normal" class="on">Normal<small>~30 cm förbi</small></button>
+              <button data-speed="firm">Fast<small>~1 m förbi</small></button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Greenfart (stimp)</label>
+            <div class="stepper">
+              <button id="stimpDown">−</button>
+              <div class="val num"><span id="stimpVal">10</span><small>stimp</small></div>
+              <button id="stimpUp">+</button>
+            </div>
+          </div>
+          <button class="btn" id="btnCalc">Beräkna sikte</button>
+        </div>
+      </div>
+
     </div>
 
+    <button class="btn sec hidden" id="btnSaveOpen">Spara putt</button>
+
+  </div>
+
+  <!-- ============ HISTORY ============ -->
+  <div id="v-history" class="hidden">
     <div class="card">
-      <h2>Steg 3 · Puttdetaljer</h2>
-      <div class="row">
+      <h2>Din träffsäkerhet</h2>
+      <div class="accbox">
+        <div class="v num" id="accVal">–</div>
+        <div class="k" id="accCap">Spara puttar med din egen läsning för att se statistik</div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Sparade puttar</h2>
+      <div class="hist" id="histList"></div>
+      <button class="btn ghost" id="btnClear" style="margin-top:14px">Rensa historik</button>
+    </div>
+  </div>
+
+  <!-- ============ SETTINGS ============ -->
+  <div id="v-settings" class="hidden">
+    <div class="card">
+      <h2>Fingerkalibrering</h2>
+      <div class="row2">
         <div class="field">
-          <label>Avstånd till hål (fot)</label>
-          <input type="number" id="distFt" placeholder="t.ex. 15" inputmode="decimal">
+          <label>Fingerbredd (mm)</label>
+          <input type="text" id="fingerW" inputmode="decimal" autocomplete="off">
         </div>
         <div class="field">
-          <label>Green-hastighet (stimp)</label>
-          <input type="number" id="stimp" placeholder="t.ex. 10" value="10" inputmode="decimal">
+          <label>Armlängd (cm)</label>
+          <input type="text" id="armL" inputmode="decimal" autocomplete="off">
         </div>
       </div>
-      <button id="btnCalc">Beräkna sikte</button>
+      <p>Mät bredden på ditt pekfinger och avståndet från ögat till knogarna när armen är rak. Appen räknar om siktet till antal fingerbredder — det är så du överför linjen på skärmen till verkligheten.</p>
+      <p id="fingerDegOut" style="color:var(--accent)"></p>
+      <button class="btn sec" id="btnSaveFinger" style="margin-top:14px">Spara</button>
     </div>
-
-    <div class="card hidden" id="resultCard">
-      <h2>Rekommenderat sikte</h2>
-      <div class="arrow-wrap">
-        <svg id="arrowSvg" viewBox="0 0 200 200">
-          <circle cx="100" cy="100" r="90" fill="none" stroke="#24492f" stroke-width="2"/>
-          <circle cx="100" cy="100" r="6" fill="#24492f"/>
-          <g id="arrowGroup">
-            <line x1="100" y1="100" x2="100" y2="30" stroke="#4ade80" stroke-width="6" stroke-linecap="round"/>
-            <polygon points="100,14 88,38 112,38" fill="#4ade80"/>
-          </g>
-        </svg>
-      </div>
-      <div class="result-big" id="cupsResult">–</div>
-      <div class="result-sub" id="cupsSub">koppbredder</div>
-      <div class="stat-grid">
-        <div class="stat"><div class="val" id="breakInResult">–</div><div class="lbl">Beräknad brytning (tum)</div></div>
-        <div class="stat"><div class="val" id="perpSlopeResult">–</div><div class="lbl">Effektiv sidlutning %</div></div>
-      </div>
-      <div class="field" style="margin-top:14px">
-        <label>Din egen AimPoint-läsning (koppbredder, valfritt)</label>
-        <input type="number" id="ownRead" placeholder="t.ex. 1.5" inputmode="decimal" step="0.5">
-      </div>
-      <div class="row">
-        <button id="btnShowCamera">📷 Visa siktlinje i kamera</button>
-        <button id="btnSave" class="secondary">Spara i historik</button>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- CAMERA OVERLAY -->
-  <div id="cameraView" class="hidden">
-    <video id="cameraVideo" autoplay playsinline muted></video>
-    <svg id="cameraOverlay" viewBox="0 0 100 200" preserveAspectRatio="none">
-      <line id="camLine" x1="50" y1="200" x2="50" y2="0" stroke="#4ade80" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.9"/>
-      <circle id="camDot" cx="50" cy="30" r="3" fill="#4ade80"/>
-    </svg>
-    <div id="camReadout">–</div>
-    <div id="camHint">Rikta kameran mot hålet – linjen visar var du ska sikta</div>
-    <button id="btnCloseCamera" class="ghost">Stäng</button>
-  </div>
-
-  <!-- HISTORY VIEW -->
-  <div id="view-history" class="hidden">
     <div class="card">
-      <h2>Träningshistorik</h2>
-      <div id="historyList"><div class="empty">Inga sparade läsningar än.</div></div>
-      <button id="btnClearHistory" class="ghost" style="margin-top:12px">Rensa historik</button>
-    </div>
-  </div>
-
-  <!-- SETTINGS VIEW -->
-  <div id="view-settings" class="hidden">
-    <div class="card">
-      <h2>Kalibrering</h2>
+      <h2>Kalibrering av brytning</h2>
       <div class="field">
-        <label>Break-konstant K (justera mot verkliga puttar)</label>
-        <input type="number" id="kConst" value="3.0" step="0.1" inputmode="decimal">
-        <div style="font-size:12px;color:var(--text-dim);margin-top:6px">
-          Modellen är en förenklad fysikapproximation, inte AimPoints officiella tabeller.
-          Brytning (tum) ≈ avstånd² × sidlutning% × K / stimp. Höj K om puttarna bryter mer
-          än appen tror, sänk om de bryter mindre.
-        </div>
+        <label>Break-konstant K</label>
+        <input type="text" id="kIn" inputmode="decimal" autocomplete="off">
       </div>
-      <button id="btnSaveSettings">Spara</button>
+      <p>Brytning ≈ avstånd² × sidlutning × K ÷ greenfart. Höj K om dina puttar bryter mer än appen visar, sänk om de bryter mindre. Standard är 20 — en grov startpunkt, inte ett validerat värde.</p>
+      <p>Eftersom avståndet är kvadrerat underskattar modellen korta puttar och överskattar långa. Kalibrera helst mot puttar runt 4–6 meter.</p>
+      <button class="btn sec" id="btnSaveK" style="margin-top:14px">Spara</button>
     </div>
     <div class="card">
-      <h2>Om appen</h2>
-      <p style="font-size:13px;color:var(--text-dim);line-height:1.5;margin:0">
-        GreenReader är en träningsprototyp. Den mäter greenens lutning med telefonens
-        gyroskop/kompass och räknar ut ett förslag på sikte i koppbredder, så du kan
-        jämföra mot din egen AimPoint-känsla och bygga upp träffsäkerhet över tid.
-        Fungerar bäst utomhus med god GPS/kompass-signal, borta från metallföremål.
-      </p>
+      <h2>Om modellen</h2>
+      <p>GreenReader använder en förenklad fysikapproximation — inte AimPoints officiella tabeller, som är upphovsrättsskyddade. Se den som ett andra par ögon när du övar, och kalibrera mot dina egna puttar.</p>
+      <p>Puttfarten skalar brytningen med grova faktorer (död 1,35× / normal 1× / fast 0,72×). Riktningen stämmer, storleken är ungefärlig.</p>
+      <p>Uppför och nedför räknas som en effektiv greenfart: en nedförsputt slås mjukare, ligger längre på greenen och bryter mer. Effekten är begränsad till mellan halva och dubbla brytningen, eftersom formeln annars skenar nära den lutning där bollen inte längre stannar.</p>
+      <p>Siktet avrundas till halva koppar och hela fingrar — finare upplösning än så går ändå inte att sikta på.</p>
+    </div>
+    <div class="card">
+      <h2>Version</h2>
+      <p>Prototyp · byggd för iPhone i Safari. All data sparas lokalt på din telefon och lämnar aldrig enheten.</p>
     </div>
   </div>
 
 </div>
 
+<nav class="tabbar">
+  <button id="tabMeasure" class="on">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="2.5"/></svg>
+    Mät
+  </button>
+  <button id="tabHistory">
+    <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M12 8v4l3 2"/></svg>
+    Historik
+  </button>
+  <button id="tabSettings">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 9 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.6 9a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"/></svg>
+    Inställningar
+  </button>
+</nav>
+
+<div class="sheet-bg hidden" id="infoSheet">
+  <div class="sheet">
+    <div class="grabber"></div>
+    <h3>Endast för träning</h3>
+    <p>Att använda telefonens sensorer för att mäta lutning är inte tillåtet under en tävlingsrond — Regel 4.3 förbjuder elektroniska hjälpmedel som mäter lutning eller spellinje.</p>
+    <p>Använd GreenReader för att bygga upp känslan innan ronden: gissa själv först, jämför sedan med appen och logga utfallet. Målet är att du till slut inte behöver den.</p>
+    <button class="btn sec" id="btnCloseInfo">Uppfattat</button>
+  </div>
+</div>
+
+<div class="sheet-bg hidden" id="saveSheet">
+  <div class="sheet">
+    <div class="grabber"></div>
+    <h3>Spara putt</h3>
+    <p>Vad läste du själv, innan du kollade? Det är jämförelsen som bygger känslan.</p>
+    <div class="field">
+      <label>Din egen läsning (koppbredder)</label>
+      <input type="text" id="ownIn" placeholder="t.ex. 1,5" inputmode="decimal" autocomplete="off">
+    </div>
+    <div class="btnrow">
+      <button class="btn sec" id="btnCancelSave">Avbryt</button>
+      <button class="btn" id="btnConfirmSave">Spara</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
+  'use strict';
   const $ = id => document.getElementById(id);
-  const state = {
-    headingToHole: null,
-    slopePct: null,
-    fallHeading: null,
-    raw: {},
-    k: parseFloat(localStorage.getItem('gr_k')) || 3.0
+  const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+  const DEG = 180 / Math.PI;
+  const num = v => parseFloat(String(v == null ? '' : v).replace(',', '.'));
+  // Normalise any angle difference into (-180, 180].
+  const norm180 = d => ((d % 360) + 540) % 360 - 180;
+
+  const CUP_IN = 4.25;
+  const SPEED = { die: 1.35, normal: 1.0, firm: 0.72 };
+  const SPEED_ORDER = ['die', 'normal', 'firm'];
+  // g divided by the stimpmeter deceleration, in per-foot-of-stimp units.
+  // Used to turn the along-the-line grade into an effective green speed.
+  const GRAVITY_OVER_DECEL = 1.789;
+
+  const sv  = (v, d) => v.toFixed(d).replace('.', ',');          // Swedish decimals
+  const half = v => Math.round(v * 2) / 2;                        // nearest half cup
+
+  const store = {
+    get k(){ return num(localStorage.getItem('gr_break_k')) || 20; },
+    set k(v){ localStorage.setItem('gr_break_k', v); },
+    get unit(){ return localStorage.getItem('gr_unit') === 'm' ? 'm' : 'ft'; },
+    set unit(v){ localStorage.setItem('gr_unit', v); },
+    get stimp(){ return num(localStorage.getItem('gr_stimp')) || 10; },
+    set stimp(v){ localStorage.setItem('gr_stimp', v); },
+    get speed(){ return SPEED[localStorage.getItem('gr_speed')] ? localStorage.getItem('gr_speed') : 'normal'; },
+    set speed(v){ localStorage.setItem('gr_speed', v); },
+    get fingerW(){ return num(localStorage.getItem('gr_finger_w')) || 18; },   // mm
+    set fingerW(v){ localStorage.setItem('gr_finger_w', v); },
+    get armL(){ return num(localStorage.getItem('gr_arm_l')) || 65; },         // cm
+    set armL(v){ localStorage.setItem('gr_arm_l', v); },
+    get hist(){
+      try { const v = JSON.parse(localStorage.getItem('gr_history') || '[]'); return Array.isArray(v) ? v : []; }
+      catch(e){ return []; }
+    },
+    set hist(v){ localStorage.setItem('gr_history', JSON.stringify(v.slice(0,200))); }
   };
-  $('kConst').value = state.k;
 
-  // ---- Navigation ----
-  const views = { read: $('view-read'), history: $('view-history'), settings: $('view-settings') };
-  const navBtns = { read: $('navRead'), history: $('navHistory'), settings: $('navSettings') };
-  function showView(name){
-    Object.keys(views).forEach(k=>{
-      views[k].classList.toggle('hidden', k!==name);
-      navBtns[k].classList.toggle('active', k===name);
-    });
-    if (name === 'history') renderHistory();
+  // One finger held at arm's length, in degrees.
+  const fingerDeg = () => Math.atan((store.fingerW / 1000) / (store.armL / 100)) * DEG;
+
+  const S = {
+    heading: null,      // compass bearing toward the hole
+    slope: null,        // locked slope %
+    fallHeading: null,  // locked downhill bearing
+    live: null,
+    flip: false,
+    result: null
+  };
+
+  /* ---------------- Geometry ----------------
+     The phone lies on the green, so its screen normal is the surface normal.
+     With the W3C orientation frame (intrinsic Z-X'-Y''), that normal expressed
+     in the earth frame (x=east, y=north, z=up) before the compass yaw is:
+        n = ( sin g , -sin b cos g , cos b cos g )
+     A plane with normal n has height gradient -(nx,ny)/nz, so the steepest
+     DESCENT runs along +(nx, ny) and its grade is |(nx,ny)| / nz. */
+  function surface(betaDeg, gammaDeg){
+    const b = betaDeg / DEG, g = gammaDeg / DEG;
+    const nx = Math.sin(g);
+    const ny = -Math.sin(b) * Math.cos(g);
+    const nz = Math.cos(b) * Math.cos(g);
+    return {
+      nx, ny, nz,
+      tiltDeg: Math.acos(clamp(nz, -1, 1)) * DEG,
+      gradePct: nz > 0.02 ? (Math.hypot(nx, ny) / nz) * 100 : 999,
+      // bearing of the downhill direction, relative to the phone's top edge
+      devDir: Math.atan2(nx, ny) * DEG
+    };
   }
-  navBtns.read.onclick = ()=>showView('read');
-  navBtns.history.onclick = ()=>showView('history');
-  navBtns.settings.onclick = ()=>showView('settings');
 
-  // ---- Sensor permission (iOS 13+) ----
-  let motionGranted = false;
-  $('btnPermission').onclick = async () => {
+  /* ---------------- Views ---------------- */
+  const views = { measure: $('v-measure'), history: $('v-history'), settings: $('v-settings') };
+  const tabs  = { measure: $('tabMeasure'), history: $('tabHistory'), settings: $('tabSettings') };
+  function showView(name){
+    Object.keys(views).forEach(k => {
+      views[k].classList.toggle('hidden', k !== name);
+      tabs[k].classList.toggle('on', k === name);
+    });
+    if (name !== 'measure') stopLive();
+    else if (activeStep === 2) startLive();
+    if (name === 'history') renderHistory();
+    window.scrollTo(0,0);
+  }
+  tabs.measure.onclick  = () => showView('measure');
+  tabs.history.onclick  = () => showView('history');
+  tabs.settings.onclick = () => showView('settings');
+
+  /* ---------------- Sheets ---------------- */
+  const openSheet  = el => el.classList.remove('hidden');
+  const closeSheet = el => el.classList.add('hidden');
+  $('pillInfo').onclick     = () => openSheet($('infoSheet'));
+  $('btnCloseInfo').onclick = () => closeSheet($('infoSheet'));
+  $('infoSheet').onclick    = e => { if (e.target === $('infoSheet')) closeSheet($('infoSheet')); };
+  $('saveSheet').onclick    = e => { if (e.target === $('saveSheet')) closeSheet($('saveSheet')); };
+
+  /* ---------------- Stepper ---------------- */
+  let activeStep = 0;
+  const stepEls = [$('st0'), $('st1'), $('st2'), $('st3')];
+  function setStep(n){
+    activeStep = n;
+    stepEls.forEach((el,i) => el.classList.toggle('active', i === n));
+    if (n === 2) startLive(); else stopLive();
+  }
+  function markDone(n, label){
+    stepEls[n].classList.add('done');
+    $('v' + n).textContent = label;
+  }
+  stepEls.forEach((el,i) => {
+    el.querySelector('.step-head').onclick = () => setStep(activeStep === i ? -1 : i);
+  });
+  function setErr(id, msg){
+    const el = $(id);
+    el.textContent = msg || '';
+    el.classList.toggle('on', !!msg);
+  }
+
+  /* ---------------- Sensor permission ---------------- */
+  const needsPerm = typeof DeviceOrientationEvent !== 'undefined' &&
+                    typeof DeviceOrientationEvent.requestPermission === 'function';
+  $('btnPerm').onclick = async () => {
     try {
       let ok = true;
-      if (typeof DeviceOrientationEvent !== 'undefined' &&
-          typeof DeviceOrientationEvent.requestPermission === 'function') {
-        const res = await DeviceOrientationEvent.requestPermission();
-        ok = res === 'granted';
-      }
-      motionGranted = ok;
-      $('permStatus').textContent = ok
-        ? '✅ Sensorer tillåtna. Du kan gå vidare till steg 1.'
-        : '❌ Åtkomst nekades. Ändra i Inställningar > Safari på iPhone.';
-      $('permStatus').style.color = ok ? 'var(--accent)' : 'var(--danger)';
+      if (needsPerm) ok = (await DeviceOrientationEvent.requestPermission()) === 'granted';
+      if (ok) { markDone(0, 'Klar'); setStep(1); }
+      else { $('v0').textContent = 'Nekad'; }
     } catch (e) {
-      $('permStatus').textContent = 'Fel: ' + e.message + ' (kräver HTTPS)';
-      $('permStatus').style.color = 'var(--danger)';
+      $('v0').textContent = 'Kräver HTTPS';
     }
   };
 
-  // ---- Step 1: heading toward hole ----
-  function currentHeading(cb){
-    let handled = false;
-    function handler(e){
-      if (handled) return;
-      let heading = null;
-      if (typeof e.webkitCompassHeading === 'number') {
-        heading = e.webkitCompassHeading; // iOS: 0 = North, clockwise, direction of top edge
-      } else if (e.absolute && e.alpha != null) {
-        heading = 360 - e.alpha;
-      }
-      if (heading != null) {
-        handled = true;
-        window.removeEventListener('deviceorientation', handler);
-        cb(heading);
-      }
-    }
-    window.addEventListener('deviceorientation', handler);
-    setTimeout(()=>{
-      if (!handled) {
-        window.removeEventListener('deviceorientation', handler);
-        cb(null);
-      }
-    }, 1500);
+  function readHeading(e){
+    if (typeof e.webkitCompassHeading === 'number' && !isNaN(e.webkitCompassHeading)) return e.webkitCompassHeading;
+    if (e.absolute && e.alpha != null) return (360 - e.alpha + 360) % 360;
+    return null;
   }
 
+  /* ---------------- Step 1: bearing to hole ---------------- */
   $('btnHeading').onclick = () => {
-    currentHeading(h => {
-      if (h == null) {
-        $('headingVal').textContent = 'ingen signal';
-        return;
-      }
-      state.headingToHole = h;
-      $('headingVal').textContent = Math.round(h) + '°';
-    });
+    setErr('err1', '');
+    let done = false;
+    const h = e => {
+      if (done) return;
+      const bearing = readHeading(e);
+      if (bearing == null) return;
+      done = true;
+      window.removeEventListener('deviceorientation', h);
+      S.heading = bearing;
+      markDone(1, Math.round(bearing) + '°');
+      setStep(2);
+    };
+    window.addEventListener('deviceorientation', h);
+    setTimeout(() => {
+      if (done) return;
+      window.removeEventListener('deviceorientation', h);
+      setErr('err1', 'Ingen kompassignal. Kontrollera att sensorer är tillåtna och att du är utomhus, borta från metall.');
+    }, 2000);
   };
 
-  // ---- Step 2: tilt / slope ----
-  $('btnTilt').onclick = () => {
-    let handled = false;
-    function handler(e){
-      if (handled) return;
-      handled = true;
-      window.removeEventListener('deviceorientation', handler);
+  /* ---------------- Step 2: live level ---------------- */
+  let liveHandler = null;
+  function startLive(){
+    if (liveHandler) return;
+    liveHandler = e => {
+      const s = surface(e.beta || 0, e.gamma || 0);
+      const compass = readHeading(e);
+      const fall = compass != null ? (compass + s.devDir + 360) % 360 : null;
 
-      const beta = e.beta || 0;   // front-back tilt, -180..180
-      const gamma = e.gamma || 0; // left-right tilt, -90..90
-      let compassNow = (typeof e.webkitCompassHeading === 'number')
-        ? e.webkitCompassHeading
-        : (e.absolute && e.alpha != null ? (360 - e.alpha) : null);
+      S.live = { pct: s.gradePct, fall, tilt: s.tiltDeg };
+      $('liveSlope').textContent = s.gradePct > 99 ? '99+' : s.gradePct.toFixed(1);
+      $('liveDir').textContent = s.tiltDeg > 25
+        ? 'Lägg telefonen plant på gräset'
+        : (fall != null ? 'Faller mot ' + Math.round(fall) + '°' : 'Ingen kompassignal');
 
-      const magnitudeDeg = Math.sqrt(beta*beta + gamma*gamma);
-      const slopePct = Math.tan(magnitudeDeg * Math.PI/180) * 100;
+      // The dot marks the downhill side — where the ball would roll.
+      const r = clamp(s.gradePct * 4, 0, 34);
+      const a = s.devDir / DEG;
+      $('bubble').setAttribute('cx', 50 + Math.sin(a) * r);
+      $('bubble').setAttribute('cy', 50 - Math.cos(a) * r);
+    };
+    window.addEventListener('deviceorientation', liveHandler);
+  }
+  function stopLive(){
+    if (!liveHandler) return;
+    window.removeEventListener('deviceorientation', liveHandler);
+    liveHandler = null;
+  }
 
-      // direction of steepest descent in device frame, then rotate to compass
-      let fallInDeviceFrame = Math.atan2(-gamma, -beta) * 180/Math.PI; // 0 = "up/forward" edge
-      let fallHeadingAbs = compassNow != null ? (compassNow + fallInDeviceFrame + 360) % 360 : null;
+  $('btnLock').onclick = () => {
+    if (!S.live) { setErr('err2', 'Ingen sensorsignal. Tillåt sensorer i steg 0 och lägg telefonen plant.'); return; }
+    if (S.live.tilt > 25) { setErr('err2', 'Telefonen lutar för mycket för att vara en greenmätning. Lägg den plant på gräset.'); return; }
+    setErr('err2', '');
+    S.slope = S.live.pct;
+    S.fallHeading = S.live.fall;
+    markDone(2, sv(S.slope, 1) + '%');
+    drawContours();
+    setStep(3);
+  };
 
-      state.raw = { beta, gamma, compassNow };
-      state.slopePct = slopePct;
-      state.fallHeading = fallHeadingAbs;
+  /* ---------------- Step 3 inputs ---------------- */
+  let unit = store.unit;
+  document.querySelectorAll('#unitSeg button').forEach(b => {
+    b.classList.toggle('on', b.dataset.unit === unit);
+    b.onclick = () => {
+      unit = b.dataset.unit; store.unit = unit;
+      document.querySelectorAll('#unitSeg button').forEach(x => x.classList.toggle('on', x === b));
+      setErr('errDist', '');
+    };
+  });
 
-      $('slopeVal').textContent = slopePct.toFixed(1) + '%';
-      $('fallDirVal').textContent = fallHeadingAbs != null ? Math.round(fallHeadingAbs) + '°' : '–';
+  let speed = store.speed;
+  document.querySelectorAll('#speedSeg button').forEach(b => {
+    b.classList.toggle('on', b.dataset.speed === speed);
+    b.onclick = () => {
+      speed = b.dataset.speed; store.speed = speed;
+      document.querySelectorAll('#speedSeg button').forEach(x => x.classList.toggle('on', x === b));
+      if (S.result) computeResult();
+    };
+  });
 
-      $('debugBox').classList.remove('hidden');
-      $('debugBox').textContent =
-        `beta=${beta.toFixed(1)} gamma=${gamma.toFixed(1)} compass=${compassNow!=null?compassNow.toFixed(1):'–'}`;
+  let stimp = store.stimp;
+  $('stimpVal').textContent = stimp;
+  function setStimp(v){ stimp = clamp(v, 6, 15); store.stimp = stimp; $('stimpVal').textContent = stimp; if (S.result) computeResult(); }
+  $('stimpDown').onclick = () => setStimp(stimp - 0.5);
+  $('stimpUp').onclick   = () => setStimp(stimp + 0.5);
+
+  const DIST_MAX = { ft: 150, m: 45 };
+
+  /* ---------------- Calculation ---------------- */
+  // Returns false when inputs are not ready. Free of navigation side effects so
+  // a settings change can recompute without moving the user around.
+  function computeResult(){
+    const raw = num($('distIn').value);
+    if (!isFinite(raw) || raw <= 0 || raw > DIST_MAX[unit] || S.slope == null) return false;
+
+    const distFt = unit === 'm' ? raw * 3.28084 : raw;
+
+    // Split the slope into the component across the line (which bends the putt)
+    // and the component along it (which speeds it up or slows it down).
+    let perp = S.slope, along = 0, aimSign = 1, dirKnown = false;
+    if (S.heading != null && S.fallHeading != null) {
+      const diff = norm180(S.fallHeading - S.heading);
+      const sinD = Math.sin(diff / DEG);
+      perp  = S.slope * Math.abs(sinD);
+      // cos > 0: the green falls toward the hole, so the putt runs downhill.
+      along = S.slope * Math.cos(diff / DEG);
+      // sinD > 0 means the green falls to the RIGHT of the line, so the ball
+      // drifts right and the aim must go LEFT. Aim is the opposite of the fall.
+      aimSign = sinD >= 0 ? -1 : 1;
+      dirKnown = true;
     }
-    window.addEventListener('deviceorientation', handler);
-    setTimeout(()=>{ if(!handled){ window.removeEventListener('deviceorientation', handler); $('slopeVal').textContent = 'ingen signal'; } }, 1500);
-  };
+    if (S.flip) aimSign *= -1;
 
-  // ---- Step 3: calculate ----
-  let lastResult = null;
+    // A downhill putt is struck softer, stays on the green longer and so bends
+    // more; uphill is the reverse. Modelled as an effective green speed, then
+    // bounded because the physical form runs away near the limit of holdable
+    // slope. Same factor for every pace, so it rides along in `base`.
+    // Clamp the denominator, not the quotient: past the critical downhill grade
+    // it crosses zero and turns negative, which would otherwise clamp a runaway
+    // downhill putt to the *minimum* break instead of the maximum.
+    const denom = 1 - GRAVITY_OVER_DECEL * stimp * (along / 100);
+    const slopeFactor = clamp(1 / Math.max(denom, 0.5), 0.5, 2.0);
+
+    const k = store.k;
+    const base = distFt * distFt * perp * k / (stimp * 100) * slopeFactor;
+    const breakIn = base * SPEED[speed];
+    const cups = breakIn / CUP_IN;
+    const offsetDeg = Math.atan(breakIn / (distFt * 12)) * DEG;
+    const fingers = offsetDeg / fingerDeg();
+
+    S.result = {
+      distFt, rawDist: raw, unit, stimp, speed, slope: S.slope, perp, along, slopeFactor,
+      base, breakIn, cups, cupsR: half(cups), offsetDeg, fingers,
+      fingersR: Math.max(1, Math.round(fingers)),
+      sign: aimSign, dirKnown, t: Date.now()
+    };
+    renderResult();
+    $('btnSaveOpen').classList.remove('hidden');
+    $('flipLine').classList.remove('hidden');
+    return true;
+  }
+
   $('btnCalc').onclick = () => {
-    const dist = parseFloat($('distFt').value);
-    const stimp = parseFloat($('stimp').value) || 10;
-    if (!dist || state.slopePct == null) {
-      alert('Fyll i avstånd och läs lutningen (steg 2) först.');
-      return;
-    }
-
-    let perpSlope = state.slopePct;
-    let sign = 1;
-    if (state.headingToHole != null && state.fallHeading != null) {
-      const diff = ((state.fallHeading - state.headingToHole) + 540) % 360 - 180; // -180..180
-      perpSlope = state.slopePct * Math.abs(Math.sin(diff * Math.PI/180));
-      sign = Math.sin(diff * Math.PI/180) >= 0 ? 1 : -1;
-    }
-    if ($('flipToggle').checked) sign *= -1;
-
-    const k = parseFloat($('kConst').value) || state.k;
-    const breakInches = Math.pow(dist, 2) * perpSlope * k / (stimp * 100);
-    const cupWidthIn = 4.25;
-    const cups = breakInches / cupWidthIn;
-
-    lastResult = {
-      dist, stimp, slopePct: state.slopePct, perpSlope,
-      breakInches, cups, sign,
-      time: Date.now()
-    };
-
-    $('resultCard').classList.remove('hidden');
-    $('cupsResult').textContent = (cups < 0.05 ? 'Rakt' : (sign>0?'Höger ':'Vänster ') + cups.toFixed(1));
-    $('cupsSub').textContent = cups < 0.05 ? '' : 'koppbredder ' + (sign>0?'höger om hålet':'vänster om hålet');
-    $('breakInResult').textContent = breakInches.toFixed(1) + '"';
-    $('perpSlopeResult').textContent = perpSlope.toFixed(1) + '%';
-
-    const rotateDeg = Math.max(-60, Math.min(60, sign * Math.min(cups,6) * 10));
-    $('arrowGroup').setAttribute('transform', `rotate(${rotateDeg} 100 100)`);
-
-    $('resultCard').scrollIntoView({behavior:'smooth', block:'nearest'});
+    const raw = num($('distIn').value);
+    if (!isFinite(raw) || raw <= 0) { setErr('errDist', 'Ange ett avstånd.'); $('distIn').focus(); return; }
+    if (raw > DIST_MAX[unit]) { setErr('errDist', 'Max ' + DIST_MAX[unit] + (unit === 'm' ? ' meter' : ' fot') + ' — det här är en puttapp.'); return; }
+    setErr('errDist', '');
+    if (S.slope == null) { setStep(2); setErr('err2', 'Lås en lutningsmätning först.'); return; }
+    if (!computeResult()) return;
+    markDone(3, String(raw).replace('.', ',') + (unit === 'm' ? ' m' : ' ft'));
+    setStep(-1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // ---- Camera aim overlay ----
-  // Note: this is NOT true ground-anchored AR (no 6DOF world tracking / WebXR
-  // support in Safari). It's a compass-heading-driven guide: as you pan the
-  // phone, the dashed line slides to indicate the aim heading relative to
-  // where the camera currently points. Good enough for practice aiming,
-  // not a "line painted on the grass".
-  let camStream = null;
-  let camOrientationHandler = null;
-  let aimHeadingAbs = null;
-
-  $('btnShowCamera').onclick = async () => {
-    if (!lastResult) return;
-    if (state.headingToHole == null) {
-      alert('Läs riktning mot hål (steg 1) innan du öppnar kameran.');
-      return;
-    }
-
-    // small-angle offset: lateral break distance vs distance to hole -> degrees
-    const distIn = lastResult.dist * 12;
-    const offsetDeg = Math.atan2(lastResult.breakInches, distIn) * 180/Math.PI;
-    aimHeadingAbs = (state.headingToHole + lastResult.sign * offsetDeg + 360) % 360;
-
-    try {
-      camStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { ideal: 'environment' } },
-        audio: false
-      });
-    } catch (e) {
-      alert('Kunde inte starta kameran: ' + e.message);
-      return;
-    }
-    $('cameraVideo').srcObject = camStream;
-    $('cameraView').classList.remove('hidden');
-
-    camOrientationHandler = (e) => {
-      let heading = (typeof e.webkitCompassHeading === 'number')
-        ? e.webkitCompassHeading
-        : (e.absolute && e.alpha != null ? (360 - e.alpha) : null);
-      if (heading == null) return;
-
-      let diff = ((aimHeadingAbs - heading) + 540) % 360 - 180; // -180..180, + = aim is to the right
-      $('camReadout').textContent = Math.abs(diff) < 2
-        ? '🎯 Rätt riktning'
-        : (diff > 0 ? '➡ Sväng höger ' : '⬅ Sväng vänster ') + Math.abs(diff).toFixed(0) + '°';
-
-      // map +/-45deg field of view onto the 0-100 viewBox width
-      const fov = 45;
-      const clamped = Math.max(-fov, Math.min(fov, diff));
-      const x = 50 + (clamped / fov) * 50;
-      $('camLine').setAttribute('x1', x);
-      $('camLine').setAttribute('x2', x);
-      $('camDot').setAttribute('cx', x);
-    };
-    window.addEventListener('deviceorientation', camOrientationHandler);
+  $('btnFlip').onclick = () => {
+    S.flip = !S.flip;
+    if (S.result) computeResult();
   };
 
-  function closeCamera(){
-    $('cameraView').classList.add('hidden');
-    if (camStream) {
-      camStream.getTracks().forEach(t => t.stop());
-      camStream = null;
+  /* ---------------- Hero ---------------- */
+  const BALL = { x: 130, y: 248 }, HOLE = { x: 130, y: 54 };
+  const PX_PER_CUP = 17;   // schematic exaggeration so small breaks stay visible
+  const MAX_OFF = 95;
+
+  function pathFor(cups, sign, pxPerCup){
+    const aimX = HOLE.x + clamp(sign * cups * pxPerCup, -MAX_OFF, MAX_OFF);
+    return { d: `M ${BALL.x} ${BALL.y} Q ${aimX} ${HOLE.y} ${HOLE.x} ${HOLE.y}`, aimX };
+  }
+
+  function drawContours(){
+    const g = $('contours');
+    g.innerHTML = '';
+    if (S.slope == null || S.slope < 0.2) { $('fallLabel').setAttribute('opacity','0'); return; }
+
+    // Bearing of the fall line relative to the ball-hole direction, which is
+    // "up" on the diagram. SVG rotates clockwise, matching compass bearings.
+    let rot = 0;
+    if (S.heading != null && S.fallHeading != null) rot = norm180(S.fallHeading - S.heading);
+
+    const gap = clamp(46 - S.slope * 5, 14, 46);
+    for (let y = -160; y <= 160; y += gap) {
+      const l = document.createElementNS('http://www.w3.org/2000/svg','line');
+      l.setAttribute('x1', -140); l.setAttribute('x2', 140);
+      l.setAttribute('y1', y);    l.setAttribute('y2', y);
+      g.appendChild(l);
     }
-    if (camOrientationHandler) {
-      window.removeEventListener('deviceorientation', camOrientationHandler);
-      camOrientationHandler = null;
+    g.setAttribute('transform', `translate(130 150) rotate(${rot})`);
+
+    // Arrow drawn pointing up, then rotated onto the fall bearing.
+    const fa = $('fallArrow');
+    fa.innerHTML =
+      '<line x1="0" y1="15" x2="0" y2="-13" stroke="#8CA394" stroke-width="1.6" stroke-linecap="round"/>' +
+      '<polygon points="0,-19 -5,-9 5,-9" fill="#8CA394"/>';
+    fa.setAttribute('transform', `translate(46 232) rotate(${rot})`);
+    $('fallLabel').setAttribute('opacity', '0.75');
+  }
+
+  function renderResult(){
+    const r = S.result;
+    if (!r) return;
+
+    // Shrink the exaggeration when needed so the widest pace line still fits;
+    // otherwise big breaks all clamp to the edge and the comparison is lost.
+    const allCups = SPEED_ORDER.map(s => (r.base * SPEED[s]) / CUP_IN);
+    const widest = Math.max.apply(null, allCups);
+    const pxPerCup = widest > 0 ? Math.min(PX_PER_CUP, MAX_OFF / widest) : PX_PER_CUP;
+
+    const main = pathFor(r.cups, r.sign, pxPerCup);
+    $('ballPath').setAttribute('d', main.d);
+    $('aimLine').setAttribute('x2', main.aimX);
+    $('aimMark').setAttribute('opacity', Math.abs(main.aimX - HOLE.x) > 3 ? '1' : '0');
+    $('aimTick').setAttribute('x1', main.aimX);
+    $('aimTick').setAttribute('x2', main.aimX);
+
+    // The other two pace lines, so the speed trade-off is visible at a glance.
+    const others = SPEED_ORDER.filter(s => s !== r.speed);
+    ['pGhostA','pGhostB'].forEach((id, i) => {
+      const c = (r.base * SPEED[others[i]]) / CUP_IN;
+      $(id).setAttribute('d', pathFor(c, r.sign, pxPerCup).d);
+    });
+
+    // Rounded to what a player can actually aim: half cups, whole fingers.
+    const straight = r.cupsR === 0;
+    $('vBig').classList.remove('muted');
+    $('vBig').textContent = straight
+      ? 'Rakt'
+      : sv(r.cupsR, 1) + (r.cupsR === 1 ? ' kopp' : ' koppar');
+    $('vCap').textContent = straight
+      ? 'Ingen märkbar brytning — sikta på hålet'
+      : 'Sikta ' + (r.sign > 0 ? 'höger' : 'vänster') + ' om hålet';
+
+    // Fingers at arm's length: how the on-screen line becomes a real aim point.
+    const box = $('fingersBox');
+    if (straight || !r.dirKnown) {
+      box.classList.remove('on');
+    } else {
+      box.classList.add('on');
+      let bars = '';
+      for (let i = 0; i < Math.min(r.fingersR, 8); i++) bars += '<i></i>';
+      $('fBars').innerHTML = bars;
+      $('fNum').textContent = r.fingersR;
+      $('fUnit').textContent = r.fingersR === 1 ? 'fingerbredd' : 'fingerbredder';
+    }
+
+    $('sSlope').textContent = sv(r.perp, 1) + '%';
+    $('sBreak').textContent = sv(r.breakIn, 1) + '″';
+    if (!r.dirKnown || Math.abs(r.along) < 0.15) {
+      $('sAlong').textContent = r.dirKnown ? 'plant' : '–';
+    } else {
+      $('sAlong').textContent = sv(Math.abs(r.along), 1) + '% ' + (r.along > 0 ? 'ned' : 'upp');
+    }
+
+    const warn = $('dirWarn');
+    if (!r.dirKnown) {
+      warn.classList.remove('hidden');
+      warn.textContent = 'Ingen riktning mot hålet är läst, så appen vet inte åt vilket håll greenen lutar. Storleken visas som om hela lutningen låg i sidled — gör om steg 1 för ett riktigt svar.';
+    } else {
+      warn.classList.add('hidden');
     }
   }
-  $('btnCloseCamera').onclick = closeCamera;
 
-  // ---- Save to history ----
-  $('btnSave').onclick = () => {
-    if (!lastResult) return;
-    const ownRead = parseFloat($('ownRead').value);
-    const entry = Object.assign({}, lastResult, {
-      ownRead: isNaN(ownRead) ? null : ownRead,
-      outcome: null
-    });
-    const hist = JSON.parse(localStorage.getItem('gr_history') || '[]');
-    hist.unshift(entry);
-    localStorage.setItem('gr_history', JSON.stringify(hist.slice(0,200)));
-    $('ownRead').value = '';
+  /* ---------------- Save & history ---------------- */
+  $('btnSaveOpen').onclick    = () => { $('ownIn').value = ''; openSheet($('saveSheet')); };
+  $('btnCancelSave').onclick  = () => closeSheet($('saveSheet'));
+  $('btnConfirmSave').onclick = () => {
+    if (!S.result) return;
+    const own = num($('ownIn').value);
+    const h = store.hist;
+    h.unshift(Object.assign({}, S.result, { own: isFinite(own) ? Math.abs(own) : null, outcome: null }));
+    store.hist = h;
+    closeSheet($('saveSheet'));
     showView('history');
   };
 
-  // ---- History ----
   function renderHistory(){
-    const hist = JSON.parse(localStorage.getItem('gr_history') || '[]');
-    const el = $('historyList');
-    if (!hist.length) { el.innerHTML = '<div class="empty">Inga sparade läsningar än.</div>'; return; }
-    el.innerHTML = hist.map((h,i) => {
-      const d = new Date(h.time);
-      const dir = h.cups < 0.05 ? 'rakt' : (h.sign>0?'höger':'vänster') + ' ' + h.cups.toFixed(1);
-      const own = h.ownRead != null ? ` · din läsning: ${h.ownRead}` : '';
-      const outcomeBtns = h.outcome
-        ? `<span class="badge">${h.outcome}</span>`
-        : `<div class="result-btns">
-             <button class="secondary" onclick="window._grOutcome(${i},'sjönk')">Sjönk</button>
-             <button class="secondary" onclick="window._grOutcome(${i},'kort')">Fel</button>
+    const h = store.hist;
+    const list = $('histList');
+
+    const withOwn = h.filter(x => x && x.own != null && isFinite(x.own) && isFinite(x.cups));
+    if (withOwn.length) {
+      const avg = withOwn.reduce((a,x) => a + Math.abs(Math.abs(x.own) - Math.abs(x.cups)), 0) / withOwn.length;
+      $('accVal').textContent = '±' + sv(avg, 1);
+      $('accCap').textContent = 'koppbredders snittavvikelse över ' + withOwn.length + ' putt' + (withOwn.length > 1 ? 'ar' : '');
+    } else {
+      $('accVal').textContent = '–';
+      $('accCap').textContent = 'Spara puttar med din egen läsning för att se statistik';
+    }
+
+    if (!h.length) { list.innerHTML = '<div class="empty">Inga sparade puttar än.</div>'; return; }
+
+    const SPEED_LABEL = { die: 'död', normal: 'normal', firm: 'fast' };
+    list.innerHTML = h.map((x,i) => {
+      const d = new Date(x.t);
+      const c = x.cupsR != null ? x.cupsR : half(Number(x.cups) || 0);
+      const dir = c === 0 ? 'rakt' : (x.sign > 0 ? 'höger ' : 'vänster ') + sv(c, 1);
+      const own = x.own != null ? ' · din läsning ' + sv(Math.abs(x.own), 1) : '';
+      const pace = x.speed ? ' · ' + (SPEED_LABEL[x.speed] || x.speed) : '';
+      const grade = (x.along != null && Math.abs(x.along) >= 0.15)
+        ? ' · ' + sv(Math.abs(x.along), 1) + '% ' + (x.along > 0 ? 'ned' : 'upp') : '';
+      const foot = x.outcome
+        ? `<span class="tag ${x.outcome === 'in' ? 'in' : 'miss'}">${x.outcome === 'in' ? '✓ Sjönk' : '✗ Missade'}</span>`
+        : `<div class="l3">
+             <button data-i="${i}" data-o="in">Sjönk</button>
+             <button data-i="${i}" data-o="miss">Missade</button>
            </div>`;
-      return `<div class="history-item" style="display:block">
-        <div style="display:flex;justify-content:space-between">
-          <span>${h.dist} fot · ${dir}</span>
-          <span class="meta">${d.toLocaleDateString('sv-SE')} ${d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'})}</span>
+      return `<div class="hrow">
+        <div class="l1">
+          <span class="d num">${String(x.rawDist).replace('.', ',')}${x.unit === 'm' ? ' m' : ' ft'} · ${dir}</span>
+          <span class="t num">${d.toLocaleDateString('sv-SE')} ${d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'})}</span>
         </div>
-        <div class="meta">lutning ${h.slopePct.toFixed(1)}% · stimp ${h.stimp}${own}</div>
-        ${outcomeBtns}
+        <div class="l2 num">Lutning ${sv(Number(x.slope) || 0, 1)}% · stimp ${x.stimp}${grade}${pace}${own}</div>
+        ${foot}
       </div>`;
     }).join('');
+
+    list.querySelectorAll('button[data-o]').forEach(b => {
+      b.onclick = () => {
+        const arr = store.hist;
+        if (arr[+b.dataset.i]) arr[+b.dataset.i].outcome = b.dataset.o;
+        store.hist = arr;
+        renderHistory();
+      };
+    });
   }
-  window._grOutcome = (i, outcome) => {
-    const hist = JSON.parse(localStorage.getItem('gr_history') || '[]');
-    if (hist[i]) hist[i].outcome = outcome;
-    localStorage.setItem('gr_history', JSON.stringify(hist));
-    renderHistory();
-  };
-  $('btnClearHistory').onclick = () => {
-    if (confirm('Rensa hela historiken?')) {
-      localStorage.removeItem('gr_history');
-      renderHistory();
-    }
+
+  $('btnClear').onclick = () => {
+    if (confirm('Rensa hela historiken?')) { store.hist = []; renderHistory(); }
   };
 
-  // ---- Settings ----
-  $('btnSaveSettings').onclick = () => {
-    const k = parseFloat($('kConst').value) || 3.0;
-    localStorage.setItem('gr_k', k);
-    state.k = k;
-    alert('Sparat.');
+  /* ---------------- Settings ---------------- */
+  function showFingerDeg(){
+    $('fingerDegOut').textContent =
+      'Ett finger täcker ' + sv(fingerDeg(), 2) + '° — ca ' +
+      Math.round(Math.tan(fingerDeg() / DEG) * 500) + ' cm på 5 meters håll.';
+  }
+  function flash(btn){
+    const old = btn.textContent;
+    btn.textContent = 'Sparat ✓';
+    setTimeout(() => btn.textContent = old, 1400);
+  }
+  $('btnSaveK').onclick = () => {
+    const v = num($('kIn').value);
+    if (isFinite(v) && v > 0) { store.k = v; if (S.result) computeResult(); }
+    else $('kIn').value = store.k;
+    flash($('btnSaveK'));
   };
+  $('btnSaveFinger').onclick = () => {
+    const w = num($('fingerW').value), a = num($('armL').value);
+    if (isFinite(w) && w > 0) store.fingerW = w; else $('fingerW').value = store.fingerW;
+    if (isFinite(a) && a > 0) store.armL = a;    else $('armL').value = store.armL;
+    showFingerDeg();
+    if (S.result) computeResult();
+    flash($('btnSaveFinger'));
+  };
+
+  /* ---------------- Init ----------------
+     Last, so every `let` above is past its temporal dead zone. */
+  $('kIn').value = store.k;
+  $('fingerW').value = store.fingerW;
+  $('armL').value = store.armL;
+  showFingerDeg();
+  if (needsPerm) {
+    setStep(0);
+  } else {
+    // Desktop and older browsers deliver orientation events without a prompt.
+    markDone(0, 'Klar');
+    setStep(1);
+  }
 
 })();
 </script>
