@@ -21,52 +21,33 @@
     --accent-ink:#04180B;
     --accent-dim:#1E3A28;
     --amber:     #F5C451;
-
-    --r-card: 20px;
-    --r-btn: 14px;
-    --pad: 16px;
-    --tabbar-h: 60px;
+    --r-card: 20px; --r-btn: 14px; --pad: 16px; --tabbar-h: 60px;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body {
-    margin: 0; padding: 0;
-    background: var(--bg);
-    color: var(--text);
+    margin: 0; padding: 0; background: var(--bg); color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-    min-height: 100%;
-    -webkit-font-smoothing: antialiased;
-    overscroll-behavior-y: contain;
+    min-height: 100%; -webkit-font-smoothing: antialiased; overscroll-behavior-y: contain;
   }
   body { font-size: 15px; line-height: 1.45; }
   .num { font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
-
   #app {
-    max-width: 460px;
-    margin: 0 auto;
+    max-width: 460px; margin: 0 auto;
     padding: calc(env(safe-area-inset-top, 0px) + 12px) var(--pad)
              calc(env(safe-area-inset-bottom, 0px) + var(--tabbar-h) + 20px);
     min-height: 100vh;
   }
 
-  /* ---------- Header ---------- */
-  .topbar {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 18px;
-  }
-  .brand {
-    display: flex; align-items: center; gap: 9px;
-    font-size: 17px; font-weight: 650; letter-spacing: -0.01em;
-  }
+  .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .brand { display: flex; align-items: center; gap: 9px; font-size: 17px; font-weight: 650; letter-spacing: -0.01em; }
   .brand .mark {
     width: 28px; height: 28px; border-radius: 9px;
     background: linear-gradient(150deg, var(--accent), #2FA95C);
     display: grid; place-items: center; font-size: 15px;
   }
   .pill {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-size: 11.5px; font-weight: 600;
-    color: var(--amber);
-    background: rgba(245,196,81,0.09);
+    display: inline-flex; align-items: center; font-size: 11.5px; font-weight: 600;
+    color: var(--amber); background: rgba(245,196,81,0.09);
     border: 1px solid rgba(245,196,81,0.22);
     padding: 5px 10px; border-radius: 999px; cursor: pointer;
   }
@@ -74,56 +55,30 @@
 
   /* ---------- Hero ---------- */
   .hero {
-    background: var(--surface);
-    border: 1px solid var(--line-soft);
-    border-radius: var(--r-card);
-    padding: 14px 14px 18px;
-    margin-bottom: 14px;
+    background: var(--surface); border: 1px solid var(--line-soft);
+    border-radius: var(--r-card); padding: 14px 14px 18px; margin-bottom: 14px;
   }
-  #heroSvg { width: 100%; display: block; max-height: 38vh; }
-  .verdict { text-align: center; margin-top: 10px; }
-  .verdict .big {
-    font-size: 44px; font-weight: 700; line-height: 1.05; letter-spacing: -0.035em;
-  }
+  #heroSvg { width: 100%; display: block; max-height: 36vh; }
+  .verdict { text-align: center; margin-top: 12px; }
+  .verdict .big { font-size: 44px; font-weight: 700; line-height: 1.05; letter-spacing: -0.035em; }
   .verdict .big.muted { color: var(--dim-2); font-size: 29px; }
-  .verdict .cap { font-size: 12.5px; color: var(--dim); margin-top: 3px; }
+  .verdict .cap { font-size: 13px; color: var(--dim); margin-top: 3px; }
 
-  /* Finger readout — the bridge from screen to green */
-  .fingers {
-    display: none;
-    align-items: center; gap: 14px;
-    background: var(--surface-2);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 12px 14px; margin-top: 14px;
-  }
-  .fingers.on { display: flex; }
-  .fbars { display: flex; gap: 4px; flex: none; }
-  .fbars i {
-    display: block; width: 11px; height: 34px; border-radius: 6px;
-    background: var(--accent);
-  }
-  .fbars i.half { opacity: 0.42; }
-  .ftext { font-size: 13px; color: var(--dim); line-height: 1.35; }
-  .ftext b { color: var(--text); font-size: 17px; font-weight: 700; }
-  .ftext small { display: block; font-size: 11px; color: var(--dim-2); }
+  .fbars { display: none; justify-content: center; gap: 5px; margin-top: 14px; }
+  .fbars.on { display: flex; }
+  .fbars i { display: block; width: 13px; height: 38px; border-radius: 7px; background: var(--accent); }
+  .fhint { display: none; text-align: center; font-size: 11.5px; color: var(--dim-2); margin-top: 8px; }
+  .fhint.on { display: block; }
 
   .statrow {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 1px; margin-top: 14px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 16px;
     background: var(--line-soft); border-radius: 12px; overflow: hidden;
   }
   .statrow .s { background: var(--surface); padding: 10px 6px; text-align: center; }
   .statrow .s .v { font-size: 16px; font-weight: 650; }
-  .statrow .s .k {
-    font-size: 10px; color: var(--dim-2); text-transform: uppercase;
-    letter-spacing: 0.07em; margin-top: 2px;
-  }
+  .statrow .s .k { font-size: 10px; color: var(--dim-2); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 2px; }
   .flipline { text-align: center; margin-top: 12px; font-size: 12.5px; color: var(--dim); }
-  .flipline button {
-    background: none; border: none; color: var(--accent);
-    font: inherit; font-weight: 600; cursor: pointer; padding: 4px 6px;
-  }
+  .flipline button { background: none; border: none; color: var(--accent); font: inherit; font-weight: 600; cursor: pointer; padding: 4px 6px; }
   .warnline {
     margin-top: 12px; font-size: 12.5px; color: var(--amber);
     background: rgba(245,196,81,0.08); border: 1px solid rgba(245,196,81,0.2);
@@ -131,10 +86,7 @@
   }
 
   /* ---------- Steps ---------- */
-  .steps {
-    background: var(--surface); border: 1px solid var(--line-soft);
-    border-radius: var(--r-card); overflow: hidden; margin-bottom: 14px;
-  }
+  .steps { background: var(--surface); border: 1px solid var(--line-soft); border-radius: var(--r-card); overflow: hidden; margin-bottom: 14px; }
   .step + .step { border-top: 1px solid var(--line-soft); }
   .step-head { display: flex; align-items: center; gap: 12px; padding: 15px 16px; cursor: pointer; }
   .step-num {
@@ -145,7 +97,6 @@
   }
   .step.done .step-num { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
   .step.active .step-num { border-color: var(--accent); color: var(--accent); }
-  /* A step that is both done and open keeps the dark glyph on the green fill. */
   .step.done.active .step-num { color: var(--accent-ink); }
   .step-title { flex: 1; font-size: 14.5px; font-weight: 550; }
   .step-val { font-size: 14px; font-weight: 650; color: var(--dim); }
@@ -153,14 +104,12 @@
   .step-body { display: none; padding: 2px 16px 18px; }
   .step.active .step-body { display: block; }
   .hint { font-size: 13px; color: var(--dim); margin: 0 0 14px; line-height: 1.5; }
-  .err { font-size: 12.5px; color: var(--amber); margin: 8px 0 0; display: none; }
+  .err { font-size: 12.5px; color: var(--amber); margin: 10px 0 0; display: none; line-height: 1.45; }
   .err.on { display: block; }
 
-  /* ---------- Buttons ---------- */
   button.btn {
-    font-family: inherit; font-size: 15.5px; font-weight: 650;
-    border: none; border-radius: var(--r-btn);
-    padding: 15px 18px; width: 100%;
+    font-family: inherit; font-size: 15.5px; font-weight: 650; border: none;
+    border-radius: var(--r-btn); padding: 15px 18px; width: 100%;
     color: var(--accent-ink); background: var(--accent); cursor: pointer;
     transition: transform .1s ease, opacity .15s ease;
   }
@@ -170,60 +119,49 @@
   .btnrow { display: flex; gap: 10px; }
   .btnrow > * { flex: 1; }
 
-  /* ---------- Level ---------- */
+  /* ---------- Level + lock slots ---------- */
   .level-wrap { display: flex; align-items: center; gap: 18px; margin-bottom: 16px; }
-  #levelSvg { width: 108px; height: 108px; flex: none; }
-  .level-read .v { font-size: 38px; font-weight: 700; letter-spacing: -0.035em; line-height: 1; }
+  #levelSvg { width: 100px; height: 100px; flex: none; }
+  .level-read .v { font-size: 36px; font-weight: 700; letter-spacing: -0.035em; line-height: 1; }
   .level-read .k { font-size: 11px; color: var(--dim-2); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 5px; }
   .level-read .sub { font-size: 12.5px; color: var(--dim); margin-top: 8px; }
 
+  .locks { display: flex; gap: 7px; }
+  .locks button {
+    flex: 1; background: var(--surface-2); border: 1px solid var(--line);
+    color: var(--text); font: inherit; font-size: 13px; font-weight: 600;
+    padding: 11px 4px; border-radius: 11px; cursor: pointer; line-height: 1.3;
+  }
+  .locks button.set { border-color: var(--accent); background: var(--accent-dim); }
+  .locks button small { display: block; font-size: 11px; font-weight: 500; color: var(--dim-2); margin-top: 2px; }
+  .locks button.set small { color: var(--accent); }
+
   /* ---------- Fields ---------- */
   .field { margin-bottom: 14px; }
-  .field label {
-    display: block; font-size: 11px; color: var(--dim-2);
-    text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 7px;
-  }
+  .field label { display: block; font-size: 11px; color: var(--dim-2); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 7px; }
   input[type=text] {
-    width: 100%;
-    background: var(--surface-2); border: 1px solid var(--line); color: var(--text);
+    width: 100%; background: var(--surface-2); border: 1px solid var(--line); color: var(--text);
     font-family: inherit; font-size: 17px; font-weight: 600;
     padding: 13px 14px; border-radius: 12px; font-variant-numeric: tabular-nums;
   }
   input:focus { outline: none; border-color: var(--accent-dim); }
-  .seg {
-    display: flex; background: var(--surface-2);
-    border: 1px solid var(--line); border-radius: 12px; padding: 3px; gap: 3px;
-  }
+  .seg { display: flex; background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 3px; gap: 3px; }
   .seg button {
-    flex: 1; background: none; border: none; color: var(--dim);
-    font: inherit; font-size: 13.5px; font-weight: 600;
-    padding: 9px 2px; border-radius: 9px; cursor: pointer;
+    flex: 1; background: none; border: none; color: var(--dim); font: inherit;
+    font-size: 13.5px; font-weight: 600; padding: 9px 2px; border-radius: 9px; cursor: pointer;
   }
   .seg button.on { background: var(--accent-dim); color: var(--accent); }
   .seg button small { display: block; font-size: 10px; font-weight: 500; opacity: 0.75; }
-  .stepper {
-    display: flex; align-items: center; gap: 10px;
-    background: var(--surface-2); border: 1px solid var(--line);
-    border-radius: 12px; padding: 6px;
-  }
+  .stepper { display: flex; align-items: center; gap: 10px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 6px; }
   .stepper button {
-    width: 40px; height: 40px; flex: none;
-    background: var(--surface); border: 1px solid var(--line);
-    color: var(--text); font-size: 20px; font-weight: 600;
-    border-radius: 9px; cursor: pointer;
+    width: 40px; height: 40px; flex: none; background: var(--surface); border: 1px solid var(--line);
+    color: var(--text); font-size: 20px; font-weight: 600; border-radius: 9px; cursor: pointer;
   }
   .stepper .val { flex: 1; text-align: center; font-size: 17px; font-weight: 650; font-variant-numeric: tabular-nums; }
   .stepper .val small { display: block; font-size: 10.5px; color: var(--dim-2); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
 
-  /* ---------- Cards ---------- */
-  .card {
-    background: var(--surface); border: 1px solid var(--line-soft);
-    border-radius: var(--r-card); padding: 18px; margin-bottom: 14px;
-  }
-  .card h2 {
-    font-size: 11px; text-transform: uppercase; letter-spacing: 0.09em;
-    color: var(--dim-2); margin: 0 0 14px; font-weight: 650;
-  }
+  .card { background: var(--surface); border: 1px solid var(--line-soft); border-radius: var(--r-card); padding: 18px; margin-bottom: 14px; }
+  .card h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.09em; color: var(--dim-2); margin: 0 0 14px; font-weight: 650; }
   .card p { font-size: 13.5px; color: var(--dim); line-height: 1.55; margin: 0; }
   .card p + p { margin-top: 10px; }
   .row2 { display: flex; gap: 10px; }
@@ -232,7 +170,6 @@
   .accbox { text-align: center; padding: 6px 0 14px; }
   .accbox .v { font-size: 40px; font-weight: 700; letter-spacing: -0.03em; }
   .accbox .k { font-size: 12.5px; color: var(--dim); margin-top: 2px; }
-
   .hist { display: flex; flex-direction: column; gap: 2px; }
   .hrow { background: var(--surface-2); border-radius: 12px; padding: 12px 14px; }
   .hrow .l1 { display: flex; justify-content: space-between; align-items: baseline; }
@@ -241,46 +178,37 @@
   .hrow .l2 { font-size: 12px; color: var(--dim); margin-top: 3px; }
   .hrow .l3 { display: flex; gap: 7px; margin-top: 10px; }
   .hrow .l3 button {
-    flex: 1; background: var(--surface); border: 1px solid var(--line);
-    color: var(--dim); font: inherit; font-size: 12.5px; font-weight: 600;
-    padding: 8px; border-radius: 9px; cursor: pointer;
+    flex: 1; background: var(--surface); border: 1px solid var(--line); color: var(--dim);
+    font: inherit; font-size: 12.5px; font-weight: 600; padding: 8px; border-radius: 9px; cursor: pointer;
   }
   .tag { display: inline-block; font-size: 11px; font-weight: 650; padding: 3px 9px; border-radius: 999px; margin-top: 8px; }
   .tag.in { background: var(--accent-dim); color: var(--accent); }
   .tag.miss { background: rgba(245,196,81,0.12); color: var(--amber); }
   .empty { text-align: center; color: var(--dim-2); font-size: 13.5px; padding: 26px 0; }
 
-  /* ---------- Tab bar ---------- */
   .tabbar {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: flex;
-    background: rgba(8,12,9,0.86);
-    -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
-    border-top: 1px solid var(--line-soft);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: rgba(8,12,9,0.86); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+    border-top: 1px solid var(--line-soft); padding-bottom: env(safe-area-inset-bottom, 0px);
   }
   .tabbar button {
-    flex: 1; background: none; border: none; cursor: pointer;
-    color: var(--dim-2); font: inherit;
+    flex: 1; background: none; border: none; cursor: pointer; color: var(--dim-2); font: inherit;
     display: flex; flex-direction: column; align-items: center; gap: 3px;
     padding: 9px 0 7px; font-size: 10.5px; font-weight: 600;
   }
   .tabbar button svg { width: 21px; height: 21px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
   .tabbar button.on { color: var(--accent); }
 
-  /* ---------- Sheet ---------- */
   .sheet-bg {
-    position: fixed; inset: 0; z-index: 90;
-    background: rgba(0,0,0,0.6);
+    position: fixed; inset: 0; z-index: 90; background: rgba(0,0,0,0.6);
     -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
     display: flex; align-items: flex-end;
   }
   .sheet {
-    width: 100%; max-width: 460px; margin: 0 auto;
-    background: var(--surface); border-radius: 24px 24px 0 0;
-    border-top: 1px solid var(--line);
+    width: 100%; max-width: 460px; margin: 0 auto; background: var(--surface);
+    border-radius: 24px 24px 0 0; border-top: 1px solid var(--line);
     padding: 10px 20px calc(env(safe-area-inset-bottom, 0px) + 20px);
-    animation: rise .26s cubic-bezier(.2,.8,.2,1);
-    max-height: 88vh; overflow-y: auto;
+    animation: rise .26s cubic-bezier(.2,.8,.2,1); max-height: 88vh; overflow-y: auto;
   }
   @keyframes rise { from { transform: translateY(100%); } }
   .grabber { width: 38px; height: 4px; border-radius: 999px; background: var(--line); margin: 0 auto 16px; }
@@ -288,9 +216,7 @@
   .sheet p { font-size: 13.5px; color: var(--dim); line-height: 1.6; margin: 0 0 14px; }
 
   .hidden { display: none !important; }
-  @media (prefers-reduced-motion: reduce) {
-    * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
-  }
+  @media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
 </style>
 </head>
 <body>
@@ -308,8 +234,7 @@
       <svg id="heroSvg" viewBox="0 0 260 290" aria-label="Vy över greenen">
         <defs>
           <radialGradient id="gGreen" cx="50%" cy="38%" r="78%">
-            <stop offset="0%" stop-color="#1A2A1D"/>
-            <stop offset="100%" stop-color="#0C120D"/>
+            <stop offset="0%" stop-color="#1A2A1D"/><stop offset="100%" stop-color="#0C120D"/>
           </radialGradient>
           <linearGradient id="gPath" x1="0" y1="1" x2="0" y2="0">
             <stop offset="0%" stop-color="#5BE585" stop-opacity="0.25"/>
@@ -324,20 +249,17 @@
           <g id="contours" opacity="0.16" stroke="#5BE585" fill="none" stroke-width="1.1"></g>
         </g>
         <g id="fallArrow" opacity="0.55"></g>
-        <text id="fallLabel" x="46" y="268" fill="#5E7266" font-size="9"
-              text-anchor="middle" opacity="0" style="font-family:-apple-system,sans-serif">nedför</text>
+        <text id="fallLabel" x="46" y="268" fill="#5E7266" font-size="9" text-anchor="middle"
+              opacity="0" style="font-family:-apple-system,sans-serif">nedför</text>
 
-        <!-- the two unselected pace lines sit behind the chosen one -->
+        <!-- per-point side-slope markers, so a double breaker is visible -->
+        <g id="ptMarks"></g>
+
         <path id="pGhostA" fill="none" stroke="#5BE585" stroke-opacity="0.22" stroke-width="1.6" stroke-dasharray="4 4"/>
         <path id="pGhostB" fill="none" stroke="#5BE585" stroke-opacity="0.22" stroke-width="1.6" stroke-dasharray="4 4"/>
-
-        <line id="aimLine" x1="130" y1="248" x2="130" y2="54"
-              stroke="#E8F2EA" stroke-opacity="0.3" stroke-width="1.5" stroke-dasharray="5 6"/>
+        <line id="aimLine" x1="130" y1="248" x2="130" y2="54" stroke="#E8F2EA" stroke-opacity="0.3" stroke-width="1.5" stroke-dasharray="5 6"/>
         <path id="ballPath" fill="none" stroke="url(#gPath)" stroke-width="3.2" stroke-linecap="round"/>
-
-        <g id="aimMark" opacity="0">
-          <line id="aimTick" y1="44" y2="64" stroke="#E8F2EA" stroke-opacity="0.55" stroke-width="1.5"/>
-        </g>
+        <g id="aimMark" opacity="0"><line id="aimTick" y1="44" y2="64" stroke="#E8F2EA" stroke-opacity="0.55" stroke-width="1.5"/></g>
 
         <circle cx="130" cy="54" r="9.5" fill="#050805" stroke="#31402F" stroke-width="1.5"/>
         <circle cx="130" cy="54" r="3" fill="#31402F" opacity="0.5"/>
@@ -349,31 +271,22 @@
         <div class="big muted num" id="vBig">Mät greenen</div>
         <div class="cap" id="vCap">Följ stegen nedan för att få ditt sikte</div>
       </div>
-
-      <div class="fingers" id="fingersBox">
-        <div class="fbars" id="fBars"></div>
-        <div class="ftext">
-          <b class="num" id="fNum">–</b> <span id="fUnit">fingerbredder</span>
-          <small>håll armen rakt ut och sikta vid kanten</small>
-        </div>
-      </div>
+      <div class="fbars" id="fBars"></div>
+      <div class="fhint" id="fHint">håll armen rakt ut och sikta vid fingerkanten</div>
 
       <div class="statrow">
         <div class="s"><div class="v num" id="sSlope">–</div><div class="k">Sidlutning</div></div>
         <div class="s"><div class="v num" id="sAlong">–</div><div class="k">Upp / ned</div></div>
-        <div class="s"><div class="v num" id="sBreak">–</div><div class="k">Brytning</div></div>
+        <div class="s"><div class="v num" id="sCups">–</div><div class="k">Koppar</div></div>
       </div>
 
       <div class="warnline hidden" id="dirWarn"></div>
-
-      <div class="flipline hidden" id="flipLine">
-        Bryter åt fel håll? <button id="btnFlip">⇄ Vänd riktning</button>
-      </div>
+      <div class="flipline hidden" id="flipLine">Bryter åt fel håll? <button id="btnFlip">⇄ Vänd riktning</button></div>
     </div>
 
-    <div class="steps" id="steps">
+    <div class="steps">
 
-      <div class="step" data-step="0" id="st0">
+      <div class="step" id="st0">
         <div class="step-head"><div class="step-num">0</div><div class="step-title">Sensoråtkomst</div><div class="step-val" id="v0">Krävs</div></div>
         <div class="step-body">
           <p class="hint">iPhone kräver din tillåtelse för att appen ska få läsa rörelse- och riktningssensorerna.</p>
@@ -381,7 +294,7 @@
         </div>
       </div>
 
-      <div class="step" data-step="1" id="st1">
+      <div class="step" id="st1">
         <div class="step-head"><div class="step-num">1</div><div class="step-title">Riktning mot hål</div><div class="step-val" id="v1">–</div></div>
         <div class="step-body">
           <p class="hint">Stå vid bollen och rikta telefonens ovankant rakt mot hålet. Håll stilla och tryck.</p>
@@ -390,10 +303,10 @@
         </div>
       </div>
 
-      <div class="step" data-step="2" id="st2">
-        <div class="step-head"><div class="step-num">2</div><div class="step-title">Lutning</div><div class="step-val" id="v2">–</div></div>
+      <div class="step" id="st2">
+        <div class="step-head"><div class="step-num">2</div><div class="step-title">Lutning längs linjen</div><div class="step-val" id="v2">–</div></div>
         <div class="step-body">
-          <p class="hint">Lägg telefonen plant på gräset mellan boll och hål. Avläsningen uppdateras live.</p>
+          <p class="hint">Lägg telefonen plant på gräset och lås en mätning vid varje punkt. Greenen lutar sällan likadant hela vägen — mitten ensam räcker om du har bråttom.</p>
           <div class="level-wrap">
             <svg id="levelSvg" viewBox="0 0 100 100">
               <circle cx="50" cy="50" r="45" fill="#0C120D" stroke="#232E25" stroke-width="1.5"/>
@@ -409,12 +322,16 @@
               <div class="sub" id="liveDir">Väntar på sensor…</div>
             </div>
           </div>
-          <button class="btn" id="btnLock">Lås mätning</button>
+          <div class="locks" id="locks">
+            <button data-pt="ball">Vid bollen<small>–</small></button>
+            <button data-pt="mid">Mitten<small>–</small></button>
+            <button data-pt="hole">Vid hålet<small>–</small></button>
+          </div>
           <p class="err" id="err2"></p>
         </div>
       </div>
 
-      <div class="step" data-step="3" id="st3">
+      <div class="step" id="st3">
         <div class="step-head"><div class="step-num">3</div><div class="step-title">Avstånd &amp; puttfart</div><div class="step-val" id="v3">–</div></div>
         <div class="step-body">
           <div class="field">
@@ -449,17 +366,13 @@
     </div>
 
     <button class="btn sec hidden" id="btnSaveOpen">Spara putt</button>
-
   </div>
 
   <!-- ============ HISTORY ============ -->
   <div id="v-history" class="hidden">
     <div class="card">
       <h2>Din träffsäkerhet</h2>
-      <div class="accbox">
-        <div class="v num" id="accVal">–</div>
-        <div class="k" id="accCap">Spara puttar med din egen läsning för att se statistik</div>
-      </div>
+      <div class="accbox"><div class="v num" id="accVal">–</div><div class="k" id="accCap">Spara puttar med din egen läsning för att se statistik</div></div>
     </div>
     <div class="card">
       <h2>Sparade puttar</h2>
@@ -473,35 +386,26 @@
     <div class="card">
       <h2>Fingerkalibrering</h2>
       <div class="row2">
-        <div class="field">
-          <label>Fingerbredd (mm)</label>
-          <input type="text" id="fingerW" inputmode="decimal" autocomplete="off">
-        </div>
-        <div class="field">
-          <label>Armlängd (cm)</label>
-          <input type="text" id="armL" inputmode="decimal" autocomplete="off">
-        </div>
+        <div class="field"><label>Fingerbredd (mm)</label><input type="text" id="fingerW" inputmode="decimal" autocomplete="off"></div>
+        <div class="field"><label>Armlängd (cm)</label><input type="text" id="armL" inputmode="decimal" autocomplete="off"></div>
       </div>
-      <p>Mät bredden på ditt pekfinger och avståndet från ögat till knogarna när armen är rak. Appen räknar om siktet till antal fingerbredder — det är så du överför linjen på skärmen till verkligheten.</p>
+      <p>Mät bredden på ditt pekfinger och avståndet från ögat till knogarna med rak arm. Fingerbredden är det som överför siktet på skärmen till verkligheten.</p>
       <p id="fingerDegOut" style="color:var(--accent)"></p>
       <button class="btn sec" id="btnSaveFinger" style="margin-top:14px">Spara</button>
     </div>
     <div class="card">
-      <h2>Kalibrering av brytning</h2>
-      <div class="field">
-        <label>Break-konstant K</label>
-        <input type="text" id="kIn" inputmode="decimal" autocomplete="off">
-      </div>
-      <p>Brytning ≈ avstånd² × sidlutning × K ÷ greenfart. Höj K om dina puttar bryter mer än appen visar, sänk om de bryter mindre. Standard är 20 — en grov startpunkt, inte ett validerat värde.</p>
-      <p>Eftersom avståndet är kvadrerat underskattar modellen korta puttar och överskattar långa. Kalibrera helst mot puttar runt 4–6 meter.</p>
-      <button class="btn sec" id="btnSaveK" style="margin-top:14px">Spara</button>
+      <h2>Personlig skala</h2>
+      <div class="field"><label>Skalfaktor</label><input type="text" id="scaleIn" inputmode="decimal" autocomplete="off"></div>
+      <p>Grundregeln är ett finger per procent sidlutning vid stimp 10. Höj skalan om dina puttar bryter mer än appen visar, sänk om de bryter mindre. Standard är 1,0.</p>
+      <button class="btn sec" id="btnSaveScale" style="margin-top:14px">Spara</button>
     </div>
     <div class="card">
-      <h2>Om modellen</h2>
-      <p>GreenReader använder en förenklad fysikapproximation — inte AimPoints officiella tabeller, som är upphovsrättsskyddade. Se den som ett andra par ögon när du övar, och kalibrera mot dina egna puttar.</p>
-      <p>Puttfarten skalar brytningen med grova faktorer (död 1,35× / normal 1× / fast 0,72×). Riktningen stämmer, storleken är ungefärlig.</p>
-      <p>Uppför och nedför räknas som en effektiv greenfart: en nedförsputt slås mjukare, ligger längre på greenen och bryter mer. Effekten är begränsad till mellan halva och dubbla brytningen, eftersom formeln annars skenar nära den lutning där bollen inte längre stannar.</p>
-      <p>Siktet avrundas till halva koppar och hela fingrar — finare upplösning än så går ändå inte att sikta på.</p>
+      <h2>Så räknar appen</h2>
+      <p>Modellen följer AimPoint Express grundregel: <b>ett finger vid utsträckt arm per procent sidlutning</b>, vid stimp 10. Antalet fingrar beror inte på puttlängden — brytningen växer ungefär linjärt med avståndet, så likformiga trianglar skalar siktet automatiskt.</p>
+      <p>Sidlutningen vägs ihop från dina mätpunkter med vikterna 1 : 2 : 1 för boll, mitt och hål. Under jämn inbromsning bidrar varje lika lång bit av puttens väg lika mycket till brytningen, så mittpunkten representerar dubbelt så lång sträcka som ändpunkterna. Komposanterna räknas med tecken, vilket gör att en dubbelbrytare delvis tar ut sig själv.</p>
+      <p>Greenfart skalar linjärt från stimp 10. Puttfart använder grova faktorer (död 1,35× / normal 1× / fast 0,72×).</p>
+      <p>Uppför och nedför räknas som en effektiv greenfart: en nedförsputt slås mjukare, ligger längre på greenen och bryter mer. Detta är modellens minst säkra del — fysiken ger en kraftigare effekt än AimPoints praktiska tumregel, så den är begränsad till mellan halva och dubbla brytningen.</p>
+      <p>Siktet avrundas till hela fingrar och halva koppar. Finare upplösning än så går ändå inte att sikta på.</p>
     </div>
     <div class="card">
       <h2>Version</h2>
@@ -513,16 +417,13 @@
 
 <nav class="tabbar">
   <button id="tabMeasure" class="on">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="2.5"/></svg>
-    Mät
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="2.5"/></svg>Mät
   </button>
   <button id="tabHistory">
-    <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M12 8v4l3 2"/></svg>
-    Historik
+    <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M12 8v4l3 2"/></svg>Historik
   </button>
   <button id="tabSettings">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 9 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.6 9a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"/></svg>
-    Inställningar
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 9 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.6 9a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"/></svg>Inställningar
   </button>
 </nav>
 
@@ -531,7 +432,7 @@
     <div class="grabber"></div>
     <h3>Endast för träning</h3>
     <p>Att använda telefonens sensorer för att mäta lutning är inte tillåtet under en tävlingsrond — Regel 4.3 förbjuder elektroniska hjälpmedel som mäter lutning eller spellinje.</p>
-    <p>Använd GreenReader för att bygga upp känslan innan ronden: gissa själv först, jämför sedan med appen och logga utfallet. Målet är att du till slut inte behöver den.</p>
+    <p>Använd GreenReader för att bygga upp känslan innan ronden: känn lutningen med fötterna först, gissa antal fingrar, jämför sedan med appen och logga utfallet. Målet är att du till slut inte behöver den.</p>
     <button class="btn sec" id="btnCloseInfo">Uppfattat</button>
   </div>
 </div>
@@ -540,11 +441,8 @@
   <div class="sheet">
     <div class="grabber"></div>
     <h3>Spara putt</h3>
-    <p>Vad läste du själv, innan du kollade? Det är jämförelsen som bygger känslan.</p>
-    <div class="field">
-      <label>Din egen läsning (koppbredder)</label>
-      <input type="text" id="ownIn" placeholder="t.ex. 1,5" inputmode="decimal" autocomplete="off">
-    </div>
+    <p>Hur många fingrar läste du själv, innan du kollade? Det är jämförelsen som bygger känslan.</p>
+    <div class="field"><label>Din egen läsning (fingrar)</label><input type="text" id="ownIn" placeholder="t.ex. 2" inputmode="decimal" autocomplete="off"></div>
     <div class="btnrow">
       <button class="btn sec" id="btnCancelSave">Avbryt</button>
       <button class="btn" id="btnConfirmSave">Spara</button>
@@ -559,31 +457,35 @@
   const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
   const DEG = 180 / Math.PI;
   const num = v => parseFloat(String(v == null ? '' : v).replace(',', '.'));
-  // Normalise any angle difference into (-180, 180].
   const norm180 = d => ((d % 360) + 540) % 360 - 180;
+  const sv = (v, d) => v.toFixed(d).replace('.', ',');
+  const half = v => Math.round(v * 2) / 2;
 
   const CUP_IN = 4.25;
+  const REF_STIMP = 10;                       // the speed the one-finger rule assumes
   const SPEED = { die: 1.35, normal: 1.0, firm: 0.72 };
   const SPEED_ORDER = ['die', 'normal', 'firm'];
-  // g divided by the stimpmeter deceleration, in per-foot-of-stimp units.
-  // Used to turn the along-the-line grade into an effective green speed.
-  const GRAVITY_OVER_DECEL = 1.789;
-
-  const sv  = (v, d) => v.toFixed(d).replace('.', ',');          // Swedish decimals
-  const half = v => Math.round(v * 2) / 2;                        // nearest half cup
+  // (5/7)g / (18/S): rolling-sphere gravity component over stimpmeter deceleration.
+  const GRAVITY_OVER_DECEL = (5/7) * 32.2 / 18;
+  // Trapezoidal weights along the path. Under uniform deceleration each equal
+  // stretch of the roll contributes equally, so the midpoint stands for twice
+  // the length that either endpoint does.
+  const PT_WEIGHT = { ball: 1, mid: 2, hole: 1 };
+  const PT_ORDER = ['ball', 'mid', 'hole'];
+  const PT_LABEL = { ball: 'Vid bollen', mid: 'Mitten', hole: 'Vid hålet' };
 
   const store = {
-    get k(){ return num(localStorage.getItem('gr_break_k')) || 20; },
-    set k(v){ localStorage.setItem('gr_break_k', v); },
+    get scale(){ return num(localStorage.getItem('gr_scale')) || 1.0; },
+    set scale(v){ localStorage.setItem('gr_scale', v); },
     get unit(){ return localStorage.getItem('gr_unit') === 'm' ? 'm' : 'ft'; },
     set unit(v){ localStorage.setItem('gr_unit', v); },
     get stimp(){ return num(localStorage.getItem('gr_stimp')) || 10; },
     set stimp(v){ localStorage.setItem('gr_stimp', v); },
-    get speed(){ return SPEED[localStorage.getItem('gr_speed')] ? localStorage.getItem('gr_speed') : 'normal'; },
+    get speed(){ const s = localStorage.getItem('gr_speed'); return SPEED[s] ? s : 'normal'; },
     set speed(v){ localStorage.setItem('gr_speed', v); },
-    get fingerW(){ return num(localStorage.getItem('gr_finger_w')) || 18; },   // mm
+    get fingerW(){ return num(localStorage.getItem('gr_finger_w')) || 18; },
     set fingerW(v){ localStorage.setItem('gr_finger_w', v); },
-    get armL(){ return num(localStorage.getItem('gr_arm_l')) || 65; },         // cm
+    get armL(){ return num(localStorage.getItem('gr_arm_l')) || 65; },
     set armL(v){ localStorage.setItem('gr_arm_l', v); },
     get hist(){
       try { const v = JSON.parse(localStorage.getItem('gr_history') || '[]'); return Array.isArray(v) ? v : []; }
@@ -591,14 +493,11 @@
     },
     set hist(v){ localStorage.setItem('gr_history', JSON.stringify(v.slice(0,200))); }
   };
-
-  // One finger held at arm's length, in degrees.
   const fingerDeg = () => Math.atan((store.fingerW / 1000) / (store.armL / 100)) * DEG;
 
   const S = {
-    heading: null,      // compass bearing toward the hole
-    slope: null,        // locked slope %
-    fallHeading: null,  // locked downhill bearing
+    heading: null,
+    pts: { ball: null, mid: null, hole: null },   // each { slope, fall }
     live: null,
     flip: false,
     result: null
@@ -606,21 +505,18 @@
 
   /* ---------------- Geometry ----------------
      The phone lies on the green, so its screen normal is the surface normal.
-     With the W3C orientation frame (intrinsic Z-X'-Y''), that normal expressed
-     in the earth frame (x=east, y=north, z=up) before the compass yaw is:
-        n = ( sin g , -sin b cos g , cos b cos g )
-     A plane with normal n has height gradient -(nx,ny)/nz, so the steepest
-     DESCENT runs along +(nx, ny) and its grade is |(nx,ny)| / nz. */
+     In the W3C frame that normal, expressed in earth axes (x=east, y=north,
+     z=up) before the compass yaw, is n = (sin g, -sin b cos g, cos b cos g).
+     A plane with normal n has height gradient -(nx,ny)/nz, so steepest descent
+     runs along +(nx, ny) with grade |(nx,ny)| / nz. */
   function surface(betaDeg, gammaDeg){
     const b = betaDeg / DEG, g = gammaDeg / DEG;
     const nx = Math.sin(g);
     const ny = -Math.sin(b) * Math.cos(g);
     const nz = Math.cos(b) * Math.cos(g);
     return {
-      nx, ny, nz,
       tiltDeg: Math.acos(clamp(nz, -1, 1)) * DEG,
       gradePct: nz > 0.02 ? (Math.hypot(nx, ny) / nz) * 100 : 999,
-      // bearing of the downhill direction, relative to the phone's top edge
       devDir: Math.atan2(nx, ny) * DEG
     };
   }
@@ -633,8 +529,7 @@
       views[k].classList.toggle('hidden', k !== name);
       tabs[k].classList.toggle('on', k === name);
     });
-    if (name !== 'measure') stopLive();
-    else if (activeStep === 2) startLive();
+    if (name !== 'measure') stopLive(); else if (activeStep === 2) startLive();
     if (name === 'history') renderHistory();
     window.scrollTo(0,0);
   }
@@ -642,7 +537,6 @@
   tabs.history.onclick  = () => showView('history');
   tabs.settings.onclick = () => showView('settings');
 
-  /* ---------------- Sheets ---------------- */
   const openSheet  = el => el.classList.remove('hidden');
   const closeSheet = el => el.classList.add('hidden');
   $('pillInfo').onclick     = () => openSheet($('infoSheet'));
@@ -658,31 +552,19 @@
     stepEls.forEach((el,i) => el.classList.toggle('active', i === n));
     if (n === 2) startLive(); else stopLive();
   }
-  function markDone(n, label){
-    stepEls[n].classList.add('done');
-    $('v' + n).textContent = label;
-  }
-  stepEls.forEach((el,i) => {
-    el.querySelector('.step-head').onclick = () => setStep(activeStep === i ? -1 : i);
-  });
-  function setErr(id, msg){
-    const el = $(id);
-    el.textContent = msg || '';
-    el.classList.toggle('on', !!msg);
-  }
+  function markDone(n, label){ stepEls[n].classList.add('done'); $('v' + n).textContent = label; }
+  stepEls.forEach((el,i) => { el.querySelector('.step-head').onclick = () => setStep(activeStep === i ? -1 : i); });
+  function setErr(id, msg){ const el = $(id); el.textContent = msg || ''; el.classList.toggle('on', !!msg); }
 
-  /* ---------------- Sensor permission ---------------- */
+  /* ---------------- Permission ---------------- */
   const needsPerm = typeof DeviceOrientationEvent !== 'undefined' &&
                     typeof DeviceOrientationEvent.requestPermission === 'function';
   $('btnPerm').onclick = async () => {
     try {
       let ok = true;
       if (needsPerm) ok = (await DeviceOrientationEvent.requestPermission()) === 'granted';
-      if (ok) { markDone(0, 'Klar'); setStep(1); }
-      else { $('v0').textContent = 'Nekad'; }
-    } catch (e) {
-      $('v0').textContent = 'Kräver HTTPS';
-    }
+      if (ok) { markDone(0, 'Klar'); setStep(1); } else { $('v0').textContent = 'Nekad'; }
+    } catch (e) { $('v0').textContent = 'Kräver HTTPS'; }
   };
 
   function readHeading(e){
@@ -691,7 +573,7 @@
     return null;
   }
 
-  /* ---------------- Step 1: bearing to hole ---------------- */
+  /* ---------------- Step 1 ---------------- */
   $('btnHeading').onclick = () => {
     setErr('err1', '');
     let done = false;
@@ -703,6 +585,7 @@
       window.removeEventListener('deviceorientation', h);
       S.heading = bearing;
       markDone(1, Math.round(bearing) + '°');
+      redrawPoints();
       setStep(2);
     };
     window.addEventListener('deviceorientation', h);
@@ -713,7 +596,7 @@
     }, 2000);
   };
 
-  /* ---------------- Step 2: live level ---------------- */
+  /* ---------------- Step 2: live level + three lock slots ---------------- */
   let liveHandler = null;
   function startLive(){
     if (liveHandler) return;
@@ -721,14 +604,11 @@
       const s = surface(e.beta || 0, e.gamma || 0);
       const compass = readHeading(e);
       const fall = compass != null ? (compass + s.devDir + 360) % 360 : null;
-
-      S.live = { pct: s.gradePct, fall, tilt: s.tiltDeg };
-      $('liveSlope').textContent = s.gradePct > 99 ? '99+' : s.gradePct.toFixed(1);
+      S.live = { slope: s.gradePct, fall, tilt: s.tiltDeg };
+      $('liveSlope').textContent = s.gradePct > 99 ? '99+' : sv(s.gradePct, 1);
       $('liveDir').textContent = s.tiltDeg > 25
         ? 'Lägg telefonen plant på gräset'
         : (fall != null ? 'Faller mot ' + Math.round(fall) + '°' : 'Ingen kompassignal');
-
-      // The dot marks the downhill side — where the ball would roll.
       const r = clamp(s.gradePct * 4, 0, 34);
       const a = s.devDir / DEG;
       $('bubble').setAttribute('cx', 50 + Math.sin(a) * r);
@@ -742,16 +622,22 @@
     liveHandler = null;
   }
 
-  $('btnLock').onclick = () => {
-    if (!S.live) { setErr('err2', 'Ingen sensorsignal. Tillåt sensorer i steg 0 och lägg telefonen plant.'); return; }
-    if (S.live.tilt > 25) { setErr('err2', 'Telefonen lutar för mycket för att vara en greenmätning. Lägg den plant på gräset.'); return; }
-    setErr('err2', '');
-    S.slope = S.live.pct;
-    S.fallHeading = S.live.fall;
-    markDone(2, sv(S.slope, 1) + '%');
-    drawContours();
-    setStep(3);
-  };
+  document.querySelectorAll('#locks button').forEach(b => {
+    b.onclick = () => {
+      const key = b.dataset.pt;
+      if (!S.live) { setErr('err2', 'Ingen sensorsignal. Tillåt sensorer i steg 0 och lägg telefonen plant.'); return; }
+      if (S.live.tilt > 25) { setErr('err2', 'Telefonen lutar för mycket för att vara en greenmätning. Lägg den plant på gräset.'); return; }
+      setErr('err2', '');
+      S.pts[key] = { slope: S.live.slope, fall: S.live.fall };
+      b.classList.add('set');
+      b.querySelector('small').textContent = sv(S.live.slope, 1) + '%';
+      const n = PT_ORDER.filter(k => S.pts[k]).length;
+      markDone(2, n + (n === 1 ? ' punkt' : ' punkter'));
+      redrawPoints();
+      if (S.result) computeResult();
+      if (n === 3) setStep(3);
+    };
+  });
 
   /* ---------------- Step 3 inputs ---------------- */
   let unit = store.unit;
@@ -763,7 +649,6 @@
       setErr('errDist', '');
     };
   });
-
   let speed = store.speed;
   document.querySelectorAll('#speedSeg button').forEach(b => {
     b.classList.toggle('on', b.dataset.speed === speed);
@@ -773,62 +658,75 @@
       if (S.result) computeResult();
     };
   });
-
   let stimp = store.stimp;
   $('stimpVal').textContent = stimp;
-  function setStimp(v){ stimp = clamp(v, 6, 15); store.stimp = stimp; $('stimpVal').textContent = stimp; if (S.result) computeResult(); }
+  function setStimp(v){
+    stimp = clamp(v, 6, 15); store.stimp = stimp;
+    $('stimpVal').textContent = stimp;
+    if (S.result) computeResult();
+  }
   $('stimpDown').onclick = () => setStimp(stimp - 0.5);
   $('stimpUp').onclick   = () => setStimp(stimp + 0.5);
 
   const DIST_MAX = { ft: 150, m: 45 };
 
-  /* ---------------- Calculation ---------------- */
-  // Returns false when inputs are not ready. Free of navigation side effects so
-  // a settings change can recompute without moving the user around.
+  /* ---------------- Aggregation ----------------
+     Split each measured point into the component across the ball-hole line
+     (which bends the putt) and along it (which speeds it up or slows it down),
+     then combine with the trapezoidal weights. The across component keeps its
+     sign, so a green falling right early and left late partly cancels. */
+  function aggregate(){
+    if (S.heading == null) return null;
+    let wSum = 0, perpSum = 0, alongSum = 0;
+    const each = {};
+    PT_ORDER.forEach(key => {
+      const p = S.pts[key];
+      if (!p || p.fall == null) return;
+      const diff = norm180(p.fall - S.heading);
+      const perp  = p.slope * Math.sin(diff / DEG);   // + = falls to the right
+      const along = p.slope * Math.cos(diff / DEG);   // + = falls toward the hole
+      const w = PT_WEIGHT[key];
+      wSum += w; perpSum += w * perp; alongSum += w * along;
+      each[key] = { perp, along, slope: p.slope };
+    });
+    if (!wSum) return null;
+    return { perp: perpSum / wSum, along: alongSum / wSum, each, count: Object.keys(each).length };
+  }
+
   function computeResult(){
     const raw = num($('distIn').value);
-    if (!isFinite(raw) || raw <= 0 || raw > DIST_MAX[unit] || S.slope == null) return false;
+    if (!isFinite(raw) || raw <= 0 || raw > DIST_MAX[unit]) return false;
+    const agg = aggregate();
+    if (!agg) return false;
 
     const distFt = unit === 'm' ? raw * 3.28084 : raw;
 
-    // Split the slope into the component across the line (which bends the putt)
-    // and the component along it (which speeds it up or slows it down).
-    let perp = S.slope, along = 0, aimSign = 1, dirKnown = false;
-    if (S.heading != null && S.fallHeading != null) {
-      const diff = norm180(S.fallHeading - S.heading);
-      const sinD = Math.sin(diff / DEG);
-      perp  = S.slope * Math.abs(sinD);
-      // cos > 0: the green falls toward the hole, so the putt runs downhill.
-      along = S.slope * Math.cos(diff / DEG);
-      // sinD > 0 means the green falls to the RIGHT of the line, so the ball
-      // drifts right and the aim must go LEFT. Aim is the opposite of the fall.
-      aimSign = sinD >= 0 ? -1 : 1;
-      dirKnown = true;
-    }
-    if (S.flip) aimSign *= -1;
+    // A downhill putt is struck softer, stays on the green longer and bends
+    // more. Modelled as an effective green speed; the denominator is clamped
+    // because the physical form crosses zero near the limit of holdable slope.
+    const denom = 1 - GRAVITY_OVER_DECEL * stimp * (agg.along / 100);
+    const gradeFactor = clamp(1 / Math.max(denom, 0.5), 0.5, 2.0);
 
-    // A downhill putt is struck softer, stays on the green longer and so bends
-    // more; uphill is the reverse. Modelled as an effective green speed, then
-    // bounded because the physical form runs away near the limit of holdable
-    // slope. Same factor for every pace, so it rides along in `base`.
-    // Clamp the denominator, not the quotient: past the critical downhill grade
-    // it crosses zero and turns negative, which would otherwise clamp a runaway
-    // downhill putt to the *minimum* break instead of the maximum.
-    const denom = 1 - GRAVITY_OVER_DECEL * stimp * (along / 100);
-    const slopeFactor = clamp(1 / Math.max(denom, 0.5), 0.5, 2.0);
+    // AimPoint Express: one finger of aim per percent of side slope, at the
+    // reference green speed. Independent of putt length -- break grows roughly
+    // linearly with distance, so the similar triangles scale it themselves.
+    const perpAbs = Math.abs(agg.perp);
+    const fingersRaw = perpAbs * (stimp / REF_STIMP) * gradeFactor * store.scale;
+    const fingers = fingersRaw * SPEED[speed];
 
-    const k = store.k;
-    const base = distFt * distFt * perp * k / (stimp * 100) * slopeFactor;
-    const breakIn = base * SPEED[speed];
+    // + = aim right. The green falls the other way from where you aim.
+    let sign = agg.perp >= 0 ? -1 : 1;
+    if (S.flip) sign *= -1;
+
+    const aimDeg = fingers * fingerDeg();
+    const breakIn = distFt * 12 * Math.tan(aimDeg / DEG);
     const cups = breakIn / CUP_IN;
-    const offsetDeg = Math.atan(breakIn / (distFt * 12)) * DEG;
-    const fingers = offsetDeg / fingerDeg();
 
     S.result = {
-      distFt, rawDist: raw, unit, stimp, speed, slope: S.slope, perp, along, slopeFactor,
-      base, breakIn, cups, cupsR: half(cups), offsetDeg, fingers,
-      fingersR: Math.max(1, Math.round(fingers)),
-      sign: aimSign, dirKnown, t: Date.now()
+      distFt, rawDist: raw, unit, stimp, speed, scale: store.scale,
+      perp: agg.perp, along: agg.along, each: agg.each, points: agg.count,
+      gradeFactor, fingersRaw, fingers, fingersR: Math.max(1, Math.round(fingers)),
+      aimDeg, breakIn, cups, cupsR: half(cups), sign, t: Date.now()
     };
     renderResult();
     $('btnSaveOpen').classList.remove('hidden');
@@ -841,63 +739,77 @@
     if (!isFinite(raw) || raw <= 0) { setErr('errDist', 'Ange ett avstånd.'); $('distIn').focus(); return; }
     if (raw > DIST_MAX[unit]) { setErr('errDist', 'Max ' + DIST_MAX[unit] + (unit === 'm' ? ' meter' : ' fot') + ' — det här är en puttapp.'); return; }
     setErr('errDist', '');
-    if (S.slope == null) { setStep(2); setErr('err2', 'Lås en lutningsmätning först.'); return; }
+    if (S.heading == null) { setStep(1); setErr('err1', 'Läs riktningen mot hålet först — utan den vet appen inte åt vilket håll greenen lutar.'); return; }
+    if (!aggregate()) { setStep(2); setErr('err2', 'Lås minst en mätpunkt först.'); return; }
     if (!computeResult()) return;
     markDone(3, String(raw).replace('.', ',') + (unit === 'm' ? ' m' : ' ft'));
     setStep(-1);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  $('btnFlip').onclick = () => {
-    S.flip = !S.flip;
-    if (S.result) computeResult();
-  };
+  $('btnFlip').onclick = () => { S.flip = !S.flip; if (S.result) computeResult(); };
 
   /* ---------------- Hero ---------------- */
   const BALL = { x: 130, y: 248 }, HOLE = { x: 130, y: 54 };
-  const PX_PER_CUP = 17;   // schematic exaggeration so small breaks stay visible
-  const MAX_OFF = 95;
+  const PT_Y = { ball: 248, mid: 151, hole: 54 };
+  const PX_PER_CUP = 17, MAX_OFF = 95;
 
   function pathFor(cups, sign, pxPerCup){
     const aimX = HOLE.x + clamp(sign * cups * pxPerCup, -MAX_OFF, MAX_OFF);
     return { d: `M ${BALL.x} ${BALL.y} Q ${aimX} ${HOLE.y} ${HOLE.x} ${HOLE.y}`, aimX };
   }
 
-  function drawContours(){
-    const g = $('contours');
-    g.innerHTML = '';
-    if (S.slope == null || S.slope < 0.2) { $('fallLabel').setAttribute('opacity','0'); return; }
+  // Contours and the downhill arrow follow the weighted average fall line.
+  function redrawPoints(){
+    const g = $('contours'), fa = $('fallArrow'), marks = $('ptMarks');
+    g.innerHTML = ''; fa.innerHTML = ''; marks.innerHTML = '';
+    $('fallLabel').setAttribute('opacity', '0');
 
-    // Bearing of the fall line relative to the ball-hole direction, which is
-    // "up" on the diagram. SVG rotates clockwise, matching compass bearings.
-    let rot = 0;
-    if (S.heading != null && S.fallHeading != null) rot = norm180(S.fallHeading - S.heading);
+    const agg = aggregate();
+    if (!agg) return;
 
-    const gap = clamp(46 - S.slope * 5, 14, 46);
-    for (let y = -160; y <= 160; y += gap) {
-      const l = document.createElementNS('http://www.w3.org/2000/svg','line');
-      l.setAttribute('x1', -140); l.setAttribute('x2', 140);
-      l.setAttribute('y1', y);    l.setAttribute('y2', y);
-      g.appendChild(l);
+    const mag = Math.hypot(agg.perp, agg.along);
+    if (mag >= 0.2) {
+      // Bearing of the mean fall line relative to the ball-hole direction,
+      // which is "up" here. SVG rotates clockwise, matching compass bearings.
+      const rot = Math.atan2(agg.perp, agg.along) * DEG;
+      const gap = clamp(46 - mag * 5, 14, 46);
+      for (let y = -160; y <= 160; y += gap) {
+        const l = document.createElementNS('http://www.w3.org/2000/svg','line');
+        l.setAttribute('x1', -140); l.setAttribute('x2', 140);
+        l.setAttribute('y1', y);    l.setAttribute('y2', y);
+        g.appendChild(l);
+      }
+      g.setAttribute('transform', `translate(130 150) rotate(${rot})`);
+      fa.innerHTML =
+        '<line x1="0" y1="15" x2="0" y2="-13" stroke="#8CA394" stroke-width="1.6" stroke-linecap="round"/>' +
+        '<polygon points="0,-19 -5,-9 5,-9" fill="#8CA394"/>';
+      fa.setAttribute('transform', `translate(46 232) rotate(${rot})`);
+      $('fallLabel').setAttribute('opacity', '0.75');
     }
-    g.setAttribute('transform', `translate(130 150) rotate(${rot})`);
 
-    // Arrow drawn pointing up, then rotated onto the fall bearing.
-    const fa = $('fallArrow');
-    fa.innerHTML =
-      '<line x1="0" y1="15" x2="0" y2="-13" stroke="#8CA394" stroke-width="1.6" stroke-linecap="round"/>' +
-      '<polygon points="0,-19 -5,-9 5,-9" fill="#8CA394"/>';
-    fa.setAttribute('transform', `translate(46 232) rotate(${rot})`);
-    $('fallLabel').setAttribute('opacity', '0.75');
+    // One tick per measured point showing its local side slope, so an
+    // uneven line or a double breaker is visible at a glance.
+    PT_ORDER.forEach(key => {
+      const e = agg.each[key];
+      if (!e) return;
+      const y = PT_Y[key];
+      const len = clamp(Math.abs(e.perp) * 9, 4, 42) * (e.perp >= 0 ? 1 : -1);
+      marks.innerHTML +=
+        `<line x1="130" y1="${y}" x2="${130 + len}" y2="${y}" stroke="#E8F2EA" stroke-opacity="0.4" stroke-width="1.4"/>` +
+        `<circle cx="${130 + len}" cy="${y}" r="2" fill="#E8F2EA" fill-opacity="0.5"/>`;
+    });
   }
 
   function renderResult(){
     const r = S.result;
     if (!r) return;
+    redrawPoints();
 
-    // Shrink the exaggeration when needed so the widest pace line still fits;
-    // otherwise big breaks all clamp to the edge and the comparison is lost.
-    const allCups = SPEED_ORDER.map(s => (r.base * SPEED[s]) / CUP_IN);
+    const allCups = SPEED_ORDER.map(s => {
+      const f = r.fingersRaw * SPEED[s];
+      return (r.distFt * 12 * Math.tan(f * fingerDeg() / DEG)) / CUP_IN;
+    });
     const widest = Math.max.apply(null, allCups);
     const pxPerCup = widest > 0 ? Math.min(PX_PER_CUP, MAX_OFF / widest) : PX_PER_CUP;
 
@@ -908,48 +820,40 @@
     $('aimTick').setAttribute('x1', main.aimX);
     $('aimTick').setAttribute('x2', main.aimX);
 
-    // The other two pace lines, so the speed trade-off is visible at a glance.
     const others = SPEED_ORDER.filter(s => s !== r.speed);
     ['pGhostA','pGhostB'].forEach((id, i) => {
-      const c = (r.base * SPEED[others[i]]) / CUP_IN;
+      const f = r.fingersRaw * SPEED[others[i]];
+      const c = (r.distFt * 12 * Math.tan(f * fingerDeg() / DEG)) / CUP_IN;
       $(id).setAttribute('d', pathFor(c, r.sign, pxPerCup).d);
     });
 
-    // Rounded to what a player can actually aim: half cups, whole fingers.
     const straight = r.cupsR === 0;
     $('vBig').classList.remove('muted');
     $('vBig').textContent = straight
       ? 'Rakt'
-      : sv(r.cupsR, 1) + (r.cupsR === 1 ? ' kopp' : ' koppar');
+      : r.fingersR + (r.fingersR === 1 ? ' finger' : ' fingrar');
     $('vCap').textContent = straight
       ? 'Ingen märkbar brytning — sikta på hålet'
       : 'Sikta ' + (r.sign > 0 ? 'höger' : 'vänster') + ' om hålet';
 
-    // Fingers at arm's length: how the on-screen line becomes a real aim point.
-    const box = $('fingersBox');
-    if (straight || !r.dirKnown) {
-      box.classList.remove('on');
-    } else {
-      box.classList.add('on');
-      let bars = '';
-      for (let i = 0; i < Math.min(r.fingersR, 8); i++) bars += '<i></i>';
-      $('fBars').innerHTML = bars;
-      $('fNum').textContent = r.fingersR;
-      $('fUnit').textContent = r.fingersR === 1 ? 'fingerbredd' : 'fingerbredder';
-    }
+    let bars = '';
+    for (let i = 0; i < Math.min(r.fingersR, 8); i++) bars += '<i></i>';
+    $('fBars').innerHTML = bars;
+    $('fBars').classList.toggle('on', !straight);
+    $('fHint').classList.toggle('on', !straight);
 
-    $('sSlope').textContent = sv(r.perp, 1) + '%';
-    $('sBreak').textContent = sv(r.breakIn, 1) + '″';
-    if (!r.dirKnown || Math.abs(r.along) < 0.15) {
-      $('sAlong').textContent = r.dirKnown ? 'plant' : '–';
-    } else {
-      $('sAlong').textContent = sv(Math.abs(r.along), 1) + '% ' + (r.along > 0 ? 'ned' : 'upp');
-    }
+    $('sSlope').textContent = sv(Math.abs(r.perp), 1) + '%';
+    $('sAlong').textContent = Math.abs(r.along) < 0.15
+      ? 'plant'
+      : sv(Math.abs(r.along), 1) + '% ' + (r.along > 0 ? 'ned' : 'upp');
+    $('sCups').textContent = straight ? '0' : sv(r.cupsR, 1);
 
     const warn = $('dirWarn');
-    if (!r.dirKnown) {
+    if (r.points < 3) {
       warn.classList.remove('hidden');
-      warn.textContent = 'Ingen riktning mot hålet är läst, så appen vet inte åt vilket håll greenen lutar. Storleken visas som om hela lutningen låg i sidled — gör om steg 1 för ett riktigt svar.';
+      warn.textContent = r.points === 1
+        ? 'Bara en mätpunkt. Greenen lutar sällan likadant hela vägen — lås punkter vid bollen och hålet för en riktigare läsning.'
+        : 'Två av tre mätpunkter låsta. Lås den sista för full noggrannhet.';
     } else {
       warn.classList.add('hidden');
     }
@@ -969,42 +873,37 @@
   };
 
   function renderHistory(){
-    const h = store.hist;
-    const list = $('histList');
-
-    const withOwn = h.filter(x => x && x.own != null && isFinite(x.own) && isFinite(x.cups));
+    const h = store.hist, list = $('histList');
+    const withOwn = h.filter(x => x && x.own != null && isFinite(x.own) && isFinite(x.fingers));
     if (withOwn.length) {
-      const avg = withOwn.reduce((a,x) => a + Math.abs(Math.abs(x.own) - Math.abs(x.cups)), 0) / withOwn.length;
+      const avg = withOwn.reduce((a,x) => a + Math.abs(x.own - x.fingers), 0) / withOwn.length;
       $('accVal').textContent = '±' + sv(avg, 1);
-      $('accCap').textContent = 'koppbredders snittavvikelse över ' + withOwn.length + ' putt' + (withOwn.length > 1 ? 'ar' : '');
+      $('accCap').textContent = 'fingrars snittavvikelse över ' + withOwn.length + ' putt' + (withOwn.length > 1 ? 'ar' : '');
     } else {
       $('accVal').textContent = '–';
       $('accCap').textContent = 'Spara puttar med din egen läsning för att se statistik';
     }
-
     if (!h.length) { list.innerHTML = '<div class="empty">Inga sparade puttar än.</div>'; return; }
 
     const SPEED_LABEL = { die: 'död', normal: 'normal', firm: 'fast' };
     list.innerHTML = h.map((x,i) => {
       const d = new Date(x.t);
-      const c = x.cupsR != null ? x.cupsR : half(Number(x.cups) || 0);
-      const dir = c === 0 ? 'rakt' : (x.sign > 0 ? 'höger ' : 'vänster ') + sv(c, 1);
-      const own = x.own != null ? ' · din läsning ' + sv(Math.abs(x.own), 1) : '';
+      const fr = x.fingersR != null ? x.fingersR : Math.round(Number(x.fingers) || 0);
+      const dir = (x.cupsR === 0) ? 'rakt' : (x.sign > 0 ? 'höger ' : 'vänster ') + fr + 'f';
+      const own = x.own != null ? ' · din läsning ' + sv(x.own, 1) + 'f' : '';
       const pace = x.speed ? ' · ' + (SPEED_LABEL[x.speed] || x.speed) : '';
+      const pts  = x.points != null ? ' · ' + x.points + 'p' : '';
       const grade = (x.along != null && Math.abs(x.along) >= 0.15)
         ? ' · ' + sv(Math.abs(x.along), 1) + '% ' + (x.along > 0 ? 'ned' : 'upp') : '';
       const foot = x.outcome
         ? `<span class="tag ${x.outcome === 'in' ? 'in' : 'miss'}">${x.outcome === 'in' ? '✓ Sjönk' : '✗ Missade'}</span>`
-        : `<div class="l3">
-             <button data-i="${i}" data-o="in">Sjönk</button>
-             <button data-i="${i}" data-o="miss">Missade</button>
-           </div>`;
+        : `<div class="l3"><button data-i="${i}" data-o="in">Sjönk</button><button data-i="${i}" data-o="miss">Missade</button></div>`;
       return `<div class="hrow">
         <div class="l1">
           <span class="d num">${String(x.rawDist).replace('.', ',')}${x.unit === 'm' ? ' m' : ' ft'} · ${dir}</span>
           <span class="t num">${d.toLocaleDateString('sv-SE')} ${d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'})}</span>
         </div>
-        <div class="l2 num">Lutning ${sv(Number(x.slope) || 0, 1)}% · stimp ${x.stimp}${grade}${pace}${own}</div>
+        <div class="l2 num">Sidlutning ${sv(Math.abs(Number(x.perp) || 0), 1)}% · stimp ${x.stimp}${grade}${pace}${pts}${own}</div>
         ${foot}
       </div>`;
     }).join('');
@@ -1018,10 +917,7 @@
       };
     });
   }
-
-  $('btnClear').onclick = () => {
-    if (confirm('Rensa hela historiken?')) { store.hist = []; renderHistory(); }
-  };
+  $('btnClear').onclick = () => { if (confirm('Rensa hela historiken?')) { store.hist = []; renderHistory(); } };
 
   /* ---------------- Settings ---------------- */
   function showFingerDeg(){
@@ -1029,16 +925,12 @@
       'Ett finger täcker ' + sv(fingerDeg(), 2) + '° — ca ' +
       Math.round(Math.tan(fingerDeg() / DEG) * 500) + ' cm på 5 meters håll.';
   }
-  function flash(btn){
-    const old = btn.textContent;
-    btn.textContent = 'Sparat ✓';
-    setTimeout(() => btn.textContent = old, 1400);
-  }
-  $('btnSaveK').onclick = () => {
-    const v = num($('kIn').value);
-    if (isFinite(v) && v > 0) { store.k = v; if (S.result) computeResult(); }
-    else $('kIn').value = store.k;
-    flash($('btnSaveK'));
+  function flash(btn){ const old = btn.textContent; btn.textContent = 'Sparat ✓'; setTimeout(() => btn.textContent = old, 1400); }
+  $('btnSaveScale').onclick = () => {
+    const v = num($('scaleIn').value);
+    if (isFinite(v) && v > 0) { store.scale = v; if (S.result) computeResult(); }
+    else $('scaleIn').value = store.scale;
+    flash($('btnSaveScale'));
   };
   $('btnSaveFinger').onclick = () => {
     const w = num($('fingerW').value), a = num($('armL').value);
@@ -1049,19 +941,13 @@
     flash($('btnSaveFinger'));
   };
 
-  /* ---------------- Init ----------------
-     Last, so every `let` above is past its temporal dead zone. */
-  $('kIn').value = store.k;
+  /* ---------------- Init (last, so every `let` is initialised) ---------------- */
+  $('scaleIn').value = store.scale;
   $('fingerW').value = store.fingerW;
   $('armL').value = store.armL;
   showFingerDeg();
-  if (needsPerm) {
-    setStep(0);
-  } else {
-    // Desktop and older browsers deliver orientation events without a prompt.
-    markDone(0, 'Klar');
-    setStep(1);
-  }
+  if (needsPerm) setStep(0);
+  else { markDone(0, 'Klar'); setStep(1); }
 
 })();
 </script>
